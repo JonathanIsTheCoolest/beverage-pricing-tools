@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function WinePricingCalculator() {
+export function WinePricingCalculator() {
   const [wholesale, setWholesale] = useState<string>("");
 
   const parsedW: number = parseFloat(wholesale);

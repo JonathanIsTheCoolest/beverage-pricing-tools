@@ -1,10 +1,10 @@
-import WinePricingCalculator from "./components/WinePricingCalculator/WinePricingCalcualtor"
+import { Dashboard } from "./components/Dashboard/Dashboard";
 
 function App() {
 
   return (
     <>
-      <WinePricingCalculator/>
+      <Dashboard/>
     </>
   )
 }
