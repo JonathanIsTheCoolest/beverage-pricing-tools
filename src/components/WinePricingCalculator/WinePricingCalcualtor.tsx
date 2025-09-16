@@ -34,16 +34,7 @@ export function WinePricingCalculator() {
     : "";
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100vw",
-        height: "100vh",
-      }}
-    >
+    <div>
       <h1>Wine Pricing Calculator</h1>
 
       <label>

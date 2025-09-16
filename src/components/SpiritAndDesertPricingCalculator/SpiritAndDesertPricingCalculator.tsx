@@ -1,13 +1,13 @@
 import { useState } from "react";
 
 export const SpiritAndDesertPricingCalculator = () => {
-  const [wholeSaleBottlePrice, setWholeSaleBottlePrice] = useState<number>(0);
-  const [markupMultiplier, setMarkupMultiplier] = useState<number>(0);
-  const [bottleSizeInML, setBottleSizeInML] = useState<number>(0);
-  const [ozPerPour, setOzPerPour] = useState<number>(2);
+  const [wholeSaleBottlePrice, setWholeSaleBottlePrice] = useState<string>("");
+  const [markupMultiplier, setMarkupMultiplier] = useState<string>("5");
+  const [bottleSizeInML, setBottleSizeInML] = useState<string>("750");
+  const [ozPerPour, setOzPerPour] = useState<string>("2");
   
   const calculateSpiritAndDesertPricing = () => {
-    const price = wholeSaleBottlePrice * markupMultiplier / (bottleSizeInML * 0.033814 / ozPerPour);
+    const price = Number(wholeSaleBottlePrice) * Number(markupMultiplier) / (Number(bottleSizeInML) * 0.033814 / Number(ozPerPour));
     return price.toFixed(2);
   };
 
@@ -19,21 +19,31 @@ export const SpiritAndDesertPricingCalculator = () => {
       <label>
         Whole Sale Bottle Price:
       </label>
-      <input type="text" value={wholeSaleBottlePrice} onChange={(e) => setWholeSaleBottlePrice(Number(e.target.value))} />
+      <input type="number" value={wholeSaleBottlePrice} onChange={(e) => setWholeSaleBottlePrice(e.target.value)} />
+      <br />
       <label>
         Markup Multiplier:
       </label>
-      <input type="text" value={markupMultiplier} onChange={(e) => setMarkupMultiplier(Number(e.target.value))} />
+      <input type="number" value={markupMultiplier} onChange={(e) => setMarkupMultiplier(e.target.value)} />
+      <br />
       <label>
         Bottle Size in ML:
       </label>
-      <input type="text" value={bottleSizeInML} onChange={(e) => setBottleSizeInML(Number(e.target.value))} />
+      <input type="number" value={bottleSizeInML} onChange={(e) => setBottleSizeInML(e.target.value)} />
+      <br />
       <label>
         Oz Per Pour:
       </label>
-      <input type="text" value={ozPerPour} onChange={(e) => setOzPerPour(Number(e.target.value))} />
-      <label>
-        Price Per Pour: ${calculateSpiritAndDesertPricing()}
+      <input type="number" value={ozPerPour} onChange={(e) => setOzPerPour(e.target.value)} />
+      <br />
+      <label
+        style={{
+          fontSize: "20px",
+          fontWeight: "bold",
+          marginTop: "10px",
+        }}
+      >
+        Price Per Pour: <span style={{ color: "red" }}>${calculateSpiritAndDesertPricing()}</span>
       </label>
     </div>
   );
