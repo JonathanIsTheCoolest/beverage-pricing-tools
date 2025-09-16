@@ -38,7 +38,7 @@ export function WinePricingCalculator() {
       <h1>Wine Pricing Calculator</h1>
 
       <label>
-        <span>Wholesale Price ($)</span>
+        <span>Wholesale Price: ($)</span>
         <input
           type="number"
           value={wholesale}
