@@ -11,6 +11,7 @@ export const SpiritAndDesertPricingCalculator = () => {
   const [ozPerPour, setOzPerPour] = useState<string>("2");
   const [csvFile, setCsvFile] = useState<File | null>(null);
   const [processedData, setProcessedData] = useState<ProcessedLiquorData[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
   
   const calculateSpiritAndDesertPricing = () => {
     const price = spiritAndDesertWinePricingFormula(wholeSaleBottlePrice, markupMultiplier, bottleSizeInML, ozPerPour);
@@ -28,7 +29,7 @@ export const SpiritAndDesertPricingCalculator = () => {
 
   const handleProcessData = async () => {
     if (csvFile) {
-      const processedData = await bulkCsvRequest(csvFile);
+      const processedData = await bulkCsvRequest(csvFile, markupMultiplier, costPercentage, ozPerPour);
       setProcessedData(processedData as ProcessedLiquorData[]);
     }
   };
@@ -36,12 +37,13 @@ export const SpiritAndDesertPricingCalculator = () => {
   const handleRemoveFile = () => {
     setCsvFile(null);
     setProcessedData([]);
+    (document.getElementById("csvFileInput") as HTMLInputElement).value = "";
   };
 
   return (
     <div>
       <h1>
-        Spirit and Desert Pricing Calculator
+        Modular Liquor and Desert Wine Pricing Calculator
       </h1>
       <label>
         Whole Sale Bottle Price: ($)
@@ -83,7 +85,7 @@ export const SpiritAndDesertPricingCalculator = () => {
       </label>
       <br /><br />
       <h2>Upload Margin Edge CSV File and Process Data in Bulk</h2>
-      <input type="file" accept=".csv" onChange={(e) => handleCsvFileChange(e)} />
+      <input id="csvFileInput" type="file" accept=".csv" onChange={(e) => handleCsvFileChange(e)} />
       <button onClick={() => handleRemoveFile()}>Remove File And Processed Data</button>
       <br />
       {
@@ -98,13 +100,30 @@ export const SpiritAndDesertPricingCalculator = () => {
       <button onClick={() => handleProcessData()}>Process Data</button>
       <br />
       <br />
+      {
+        processedData.length > 0 &&
+        <div>
+          <label>Search Product Name:</label>
+          <input type="text" placeholder="Search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+        </div>
+      }
+      <br />
+      <br />
       <div>
         {processedData.map((item: ProcessedLiquorData, index: number) => (
-          <div key={item.name}>
-            <h3>Item {index + 1} {item.unit ? "" : " Could Not Be Processed"}</h3>
+          <div 
+            key={item.name}
+            style={{
+              display: item.name.toLowerCase().includes(searchQuery.toLowerCase()) ? "block" : "none",
+            }}
+          >
+            <h3>Item {index + 1} {item.unit ? "Successfully Processed ✅" : " Could Not Be Processed ❌"}</h3>
+            <div>
+              
+            </div>
             <div
               style={{
-                border: item.unit ? "1px solid black" : "3px solid red",
+                border: item.unit ? "3px solid green" : "3px solid red",
                 padding: "10px",
                 margin: "10px",
                 borderRadius: "5px",
