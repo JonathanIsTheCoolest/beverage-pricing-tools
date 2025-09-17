@@ -37,6 +37,7 @@ export const Navigation = () => {
         {
           Object.keys(locationObject).map((objectName) => (   
             <button 
+            key={objectName}
             style={location.name === objectName ? selectedStyle : {}}
             onClick={() => setLocation(locationObject[objectName])} 
             value={objectName} 

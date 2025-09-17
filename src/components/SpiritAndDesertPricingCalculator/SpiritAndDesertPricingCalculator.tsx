@@ -1,23 +1,41 @@
 import { useState } from "react";
+import { deriveMarkupMultiplier, spiritAndDesertWinePricingFormula } from "../../helpers/spiritAndDesertWinePricing/formulas";
+import { bulkCsvRequest } from "../../helpers/marginEdge/bulkCsvRequest";
+import type { ProcessedLiquorData } from "../../interfaces/marginEdge";
 
 export const SpiritAndDesertPricingCalculator = () => {
-  const deriveMarkupMultiplier = (costPercentage: string) => {
-    return (100 / Number(costPercentage)).toString();
-  }
   const [wholeSaleBottlePrice, setWholeSaleBottlePrice] = useState<string>("");
   const [costPercentage, setCostPercentage] = useState<string>("18");
   const [markupMultiplier, setMarkupMultiplier] = useState<string>(deriveMarkupMultiplier(costPercentage));
   const [bottleSizeInML, setBottleSizeInML] = useState<string>("750");
   const [ozPerPour, setOzPerPour] = useState<string>("2");
+  const [csvFile, setCsvFile] = useState<File | null>(null);
+  const [processedData, setProcessedData] = useState<ProcessedLiquorData[]>([]);
   
   const calculateSpiritAndDesertPricing = () => {
-    const price = Number(wholeSaleBottlePrice) * Number(markupMultiplier) / (Number(bottleSizeInML) * 0.033814 / Number(ozPerPour));
+    const price = spiritAndDesertWinePricingFormula(wholeSaleBottlePrice, markupMultiplier, bottleSizeInML, ozPerPour);
     return price.toFixed(2);
   };
 
   const handleCostPercentageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCostPercentage(e.target.value);
     setMarkupMultiplier(deriveMarkupMultiplier(e.target.value));
+  };
+
+  const handleCsvFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCsvFile(e.target.files?.[0] || null);
+  };
+
+  const handleProcessData = async () => {
+    if (csvFile) {
+      const processedData = await bulkCsvRequest(csvFile);
+      setProcessedData(processedData as ProcessedLiquorData[]);
+    }
+  };
+
+  const handleRemoveFile = () => {
+    setCsvFile(null);
+    setProcessedData([]);
   };
 
   return (
@@ -63,6 +81,50 @@ export const SpiritAndDesertPricingCalculator = () => {
       >
         Price Per Pour: <span style={{ color: "red" }}>${calculateSpiritAndDesertPricing()}</span>
       </label>
+      <br /><br />
+      <h2>Upload Margin Edge CSV File and Process Data in Bulk</h2>
+      <input type="file" accept=".csv" onChange={(e) => handleCsvFileChange(e)} />
+      <button onClick={() => handleRemoveFile()}>Remove File And Processed Data</button>
+      <br />
+      {
+        csvFile && 
+        <div>
+          <h3>File Name: {csvFile.name}</h3>
+          <h3>File Type: {csvFile.type}</h3>
+          <h3>File Size: {csvFile.size}</h3>
+        </div>
+      }
+      <br />
+      <button onClick={() => handleProcessData()}>Process Data</button>
+      <br />
+      <br />
+      <div>
+        {processedData.map((item: ProcessedLiquorData, index: number) => (
+          <div key={item.name}>
+            <h3>Item {index + 1} {item.unit ? "" : " Could Not Be Processed"}</h3>
+            <div
+              style={{
+                border: item.unit ? "1px solid black" : "3px solid red",
+                padding: "10px",
+                margin: "10px",
+                borderRadius: "5px",
+              }}
+            >
+              Name: <span style={{ fontSize: "16px", fontWeight: "bold" }}>{item.name}</span>
+              <br />
+              Price: {item.price}
+              <br />
+              Unit: {item.unit}
+              <br />
+              Unit Quantity: {item.unitQuantity}
+              <br />
+              Unit Quantity In Milliliters: {item.unitQuantityInMilliliters}
+              <br />
+              Price Per {item.ozPerPour}oz Pour At %{item.costPercentage} Cost Percentage: <span style={{ fontSize: "16px", fontWeight: "bold" }}>{item.pricePerPourAtCostPercentage}</span>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
