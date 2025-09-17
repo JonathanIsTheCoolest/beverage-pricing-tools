@@ -2,6 +2,8 @@ import { useState } from "react";
 import { deriveMarkupMultiplier, spiritAndDesertWinePricingFormula } from "../../helpers/spiritAndDesertWinePricing/formulas";
 import { bulkCsvRequest } from "../../helpers/marginEdge/bulkCsvRequest";
 import type { ProcessedLiquorData } from "../../interfaces/marginEdge";
+import { liqourAndWineSearchFilters } from "../../constants/calculator";
+import type { SearchFilter } from "../../interfaces/calculator";
 
 export const SpiritAndDesertPricingCalculator = () => {
   const [wholeSaleBottlePrice, setWholeSaleBottlePrice] = useState<string>("");
@@ -12,6 +14,7 @@ export const SpiritAndDesertPricingCalculator = () => {
   const [csvFile, setCsvFile] = useState<File | null>(null);
   const [processedData, setProcessedData] = useState<ProcessedLiquorData[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [searchFilter, setSearchFilter] = useState<SearchFilter>(liqourAndWineSearchFilters[0]);
   
   const calculateSpiritAndDesertPricing = () => {
     const price = spiritAndDesertWinePricingFormula(wholeSaleBottlePrice, markupMultiplier, bottleSizeInML, ozPerPour);
@@ -40,10 +43,30 @@ export const SpiritAndDesertPricingCalculator = () => {
     (document.getElementById("csvFileInput") as HTMLInputElement).value = "";
   };
 
+  const handleSearchFilterLogic = (item: ProcessedLiquorData) => { 
+    if (searchFilter.name === "all") {
+      return true;
+    } else if (searchFilter.name === "successfullyProcessed" && item.unit) {
+      return true;
+    } else if (searchFilter.name === "failedToProcess" && !item.unit) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  const handleSearchQueryLogic = (item: ProcessedLiquorData) => {
+    if (searchQuery.length > 0) {
+      return item.name.toLowerCase().includes(searchQuery.toLowerCase());
+    } else {
+      return true;
+    }
+  }
+
   return (
     <div>
       <h1>
-        Modular Liquor and Desert Wine Pricing Calculator
+        Modular Beverage Pricing Calculator
       </h1>
       <label>
         Whole Sale Bottle Price: ($)
@@ -103,6 +126,25 @@ export const SpiritAndDesertPricingCalculator = () => {
       {
         processedData.length > 0 &&
         <div>
+          <label>Search Filter:</label>
+          {
+            liqourAndWineSearchFilters.map((filter) => {
+              return (
+                <button 
+                  onClick={() => setSearchFilter(filter)}
+                  style={{
+                    backgroundColor: searchFilter.name === filter.name ? "red" : "white",
+                    color: searchFilter.name === filter.name ? "white" : "black",
+                    border: "1px solid black",
+                    borderRadius: "5px",
+                    padding: "5px",
+                    margin: "0 5px",
+                  }}
+                >{filter.description}</button>
+              )
+            })
+          }
+          <br /><br />
           <label>Search Product Name:</label>
           <input type="text" placeholder="Search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
         </div>
@@ -114,7 +156,7 @@ export const SpiritAndDesertPricingCalculator = () => {
           <div 
             key={item.name}
             style={{
-              display: item.name.toLowerCase().includes(searchQuery.toLowerCase()) ? "block" : "none",
+              display: handleSearchQueryLogic(item) && handleSearchFilterLogic(item) ? "block" : "none",
             }}
           >
             <h3>Item {index + 1} {item.unit ? "Successfully Processed ✅" : " Could Not Be Processed ❌"}</h3>

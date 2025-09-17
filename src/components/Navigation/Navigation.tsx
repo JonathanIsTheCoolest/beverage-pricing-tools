@@ -12,7 +12,7 @@ interface Location {
 const locationObject: { [key: string]: Location } = {
   spirit:{
     name: "spirit",
-    description: "Modular Liquor and Desert Wine Pricing Calculator",
+    description: "Modular Beverage Pricing Calculator",
     component: <SpiritAndDesertPricingCalculator />
   },
   wine: { 
