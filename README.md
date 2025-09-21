@@ -1,1 +1,1 @@
-This repo is for Jaji tools
+This repo is for Restaurant Beverage Pricing Tools
