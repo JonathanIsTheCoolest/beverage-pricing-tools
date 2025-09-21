@@ -1,5 +1,5 @@
 import marginEdgeLiquorCSVparser from "../../helpers/marginEdge/liquorCSVparser.ts"; 
-import loadCsvFromAssets from "../../helpers/csvLoader.ts";
+import loadCsvFromAssets from "../../helpers/csv/csvLoader.ts";
 import { processLiquorData } from "../../helpers/marginEdge/processLiquorData.ts";
 
 export const testLiquor = async () => {

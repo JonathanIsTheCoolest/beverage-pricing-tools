@@ -4,6 +4,8 @@ import { bulkCsvRequest } from "../../helpers/marginEdge/bulkCsvRequest";
 import type { ProcessedLiquorData } from "../../interfaces/marginEdge";
 import { liqourAndWineSearchFilters } from "../../constants/calculator";
 import type { SearchFilter } from "../../interfaces/calculator";
+import { useCSVDownloader } from "react-papaparse";
+
 
 export const SpiritAndDesertPricingCalculator = () => {
   const [wholeSaleBottlePrice, setWholeSaleBottlePrice] = useState<string>("");
@@ -15,6 +17,7 @@ export const SpiritAndDesertPricingCalculator = () => {
   const [processedData, setProcessedData] = useState<ProcessedLiquorData[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [searchFilter, setSearchFilter] = useState<SearchFilter>(liqourAndWineSearchFilters[0]);
+  const { CSVDownloader, Type } = useCSVDownloader();
   
   const calculateSpiritAndDesertPricing = () => {
     const price = spiritAndDesertWinePricingFormula(wholeSaleBottlePrice, markupMultiplier, bottleSizeInML, ozPerPour);
@@ -121,6 +124,17 @@ export const SpiritAndDesertPricingCalculator = () => {
       }
       <br />
       <button onClick={() => handleProcessData()}>Process Data</button>
+      {
+        processedData.length > 0 &&
+        <CSVDownloader
+        type={Type.Button}
+        filename={`${csvFile?.name}-processedData.csv`}
+        bom /* helps Excel with UTF-8 */
+        data={processedData}
+        >
+          Download CSV
+        </CSVDownloader>
+      }
       <br />
       <br />
       {
@@ -131,6 +145,7 @@ export const SpiritAndDesertPricingCalculator = () => {
             liqourAndWineSearchFilters.map((filter) => {
               return (
                 <button 
+                  key={filter.name}
                   onClick={() => setSearchFilter(filter)}
                   style={{
                     backgroundColor: searchFilter.name === filter.name ? "red" : "white",
