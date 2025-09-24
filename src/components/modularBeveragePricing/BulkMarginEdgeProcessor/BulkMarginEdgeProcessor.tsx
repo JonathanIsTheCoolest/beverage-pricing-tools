@@ -1,9 +1,9 @@
 import { useCSVDownloader } from "react-papaparse";
-import { liqourAndWineSearchFilters } from "../../constants/calculator";
+import { liqourAndWineSearchFilters } from "../../../constants/calculator";
 import { useState } from "react";
-import type { ProcessedLiquorData } from "../../interfaces/marginEdge";
-import type { SearchFilter, SlidingScale } from "../../interfaces/calculator";
-import { bulkCsvRequest } from "../../helpers/marginEdge/bulkCsvRequest";
+import type { ProcessedLiquorData } from "../../../interfaces/marginEdge";
+import type { SearchFilter, SlidingScale } from "../../../interfaces/calculator";
+import { bulkCsvRequest } from "../../../helpers/marginEdge/bulkCsvRequest";
 
 export const BulkMarginEdgeProcessor = ({ markupMultiplier, costPercentage, ozPerPour, slidingScale }: { markupMultiplier: number, costPercentage: number, ozPerPour: number, slidingScale: SlidingScale }) => {
   const { CSVDownloader, Type } = useCSVDownloader();

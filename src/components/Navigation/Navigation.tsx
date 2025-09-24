@@ -1,6 +1,5 @@
 import { useState } from "react";
-
-import { ModularBeveragePricingCalculator } from "../ModularBeveragePricingCalculator/ModularBeveragePricingCalculator";
+import { ModularBeverageWrapper } from "../modularBeveragePricing/ModularBeverageWrapper/ModularBeverageWrapper";
 import { WinePricingCalculator } from "../WinePricingCalculator/WinePricingCalcualtor";
 
 interface Location {
@@ -13,7 +12,7 @@ const locationObject: { [key: string]: Location } = {
   modularBeveragePricingCalculator:{
     name: "modularBeveragePricingCalculator",
     description: "Modular Beverage Pricing Calculator",
-    component: <ModularBeveragePricingCalculator />
+    component: <ModularBeverageWrapper />
   },
   wine: { 
     name: "wine",

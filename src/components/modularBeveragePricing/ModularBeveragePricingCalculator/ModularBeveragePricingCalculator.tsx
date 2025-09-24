@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { deriveMarkupMultiplier, modularBeveragePricingFormula, bottlePricingFormula, testSlidingScaleMarkupMultiplier, deriveSlidingScaleMarkupMultiplier } from "../../helpers/pricingFormulas/formulas";
-import { defaultSlidingScale } from "../../constants/calculator";
-import type { SlidingScale } from "../../interfaces/calculator";
+import { deriveMarkupMultiplier, modularBeveragePricingFormula, bottlePricingFormula, testSlidingScaleMarkupMultiplier, deriveSlidingScaleMarkupMultiplier } from "../../../helpers/pricingFormulas/formulas";
+import { defaultSlidingScale } from "../../../constants/calculator";
+import type { SlidingScale } from "../../../interfaces/calculator";
 import { BulkMarginEdgeProcessor } from "../BulkMarginEdgeProcessor/BulkMarginEdgeProcessor";
 
 export const ModularBeveragePricingCalculator = () => {
@@ -78,7 +78,7 @@ export const ModularBeveragePricingCalculator = () => {
   ]
 
   const wholesaleBottlePriceInputArray = [
-    { name: 'wholeSaleBottlePrice', label: 'Whole Sale Bottle Price: ($)', type: 'number', value: wholeSaleBottlePrice, onChange: (e: React.ChangeEvent<HTMLInputElement>) => handleWholesaleBottlePriceChange(e), style: inputStyle },
+    { name: 'wholeSaleBottlePrice', label: 'Wholesale Bottle Price: ($)', type: 'number', value: wholeSaleBottlePrice, onChange: (e: React.ChangeEvent<HTMLInputElement>) => handleWholesaleBottlePriceChange(e), style: inputStyle },
   ]
 
   const costPercentageInputArray = [
