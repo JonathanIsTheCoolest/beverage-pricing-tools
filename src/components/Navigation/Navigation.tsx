@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { SpiritAndDesertPricingCalculator } from "../SpiritAndDesertPricingCalculator/SpiritAndDesertPricingCalculator";
+import { ModularBeveragePricingCalculator } from "../ModularBeveragePricingCalculator/ModularBeveragePricingCalculator";
 import { WinePricingCalculator } from "../WinePricingCalculator/WinePricingCalcualtor";
 
 interface Location {
@@ -10,10 +10,10 @@ interface Location {
 }
 
 const locationObject: { [key: string]: Location } = {
-  spirit:{
-    name: "spirit",
+  modularBeveragePricingCalculator:{
+    name: "modularBeveragePricingCalculator",
     description: "Modular Beverage Pricing Calculator",
-    component: <SpiritAndDesertPricingCalculator />
+    component: <ModularBeveragePricingCalculator />
   },
   wine: { 
     name: "wine",
@@ -28,7 +28,7 @@ const selectedStyle = {
 }
 
 export const Navigation = () => {
-  const [location, setLocation] = useState<Location>(locationObject['spirit']); 
+  const [location, setLocation] = useState<Location>(locationObject['modularBeveragePricingCalculator']); 
 
   return (
     <div      

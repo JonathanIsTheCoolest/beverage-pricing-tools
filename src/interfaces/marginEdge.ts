@@ -18,4 +18,6 @@ export interface ProcessedLiquorData {
   ozPerPour: number;
   costPercentage: number;
   pricePerPourAtCostPercentage: string;
+  pricePerBottleAtCostPercentage: string;
+  markupMultiplier: number;
 }
