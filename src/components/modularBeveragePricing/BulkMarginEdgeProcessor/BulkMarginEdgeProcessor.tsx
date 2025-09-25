@@ -4,7 +4,7 @@ import { useState } from "react";
 import type { ProcessedBeverageData } from "../../../interfaces/marginEdge";
 import type { SearchFilter, SlidingScale } from "../../../interfaces/calculator";
 import { bulkCsvRequest } from "../../../helpers/marginEdge/bulkCsvRequest";
-import { csvParsingErrorMessages } from "../../../errorMessages/csv";
+import { BulkBeverageCard } from "../BulkBeverageCard/BulkBeverageCard";
 
 export const BulkMarginEdgeProcessor = ({ markupMultiplier, costPercentage, ozPerPour, slidingScale }: { markupMultiplier: number, costPercentage: number, ozPerPour: number, slidingScale: SlidingScale }) => {
   const { CSVDownloader, Type } = useCSVDownloader();
@@ -30,24 +30,6 @@ export const BulkMarginEdgeProcessor = ({ markupMultiplier, costPercentage, ozPe
     setProcessedData([]);
     (document.getElementById("csvFileInput") as HTMLInputElement).value = "";
   };
-
-  const handleSearchFilterLogic = (item: ProcessedBeverageData, searchFilter: SearchFilter) => { 
-    if (searchFilter.name === "all") {
-      return true;
-    } else if (searchFilter.name === item.success.name) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  const handleSearchQueryLogic = (item: ProcessedBeverageData) => {
-    if (searchQuery.length > 0) {
-      return item.name.toLowerCase().includes(searchQuery.toLowerCase());
-    } else {
-      return true;
-    }
-  }
 
   return (
     <div>
@@ -109,49 +91,14 @@ export const BulkMarginEdgeProcessor = ({ markupMultiplier, costPercentage, ozPe
       <br />
       <div>
         {processedData.map((item: ProcessedBeverageData, index: number) => (
-          <div 
+          <BulkBeverageCard
             key={item.name}
-            style={{
-              display: handleSearchQueryLogic(item) && handleSearchFilterLogic(item, searchFilter) ? "block" : "none",
-            }}
-          >
-            <h3>Item {index + 1} {item.success.description}</h3>
-            <div>
-              
-            </div>
-            <div
-              style={{
-                border: `3px solid ${item.success.color}`,
-                padding: "10px",
-                margin: "10px",
-                borderRadius: "5px",
-              }}
-            >
-              Name: <span style={{ fontSize: "16px", fontWeight: "bold" }}>{item.name}</span>
-              <br />
-              Category: {item.category}
-              <br />
-              Price: ${item.price} <span style={{color: 'red'}}>{item.error['missingPrice'] && 'Item price must be resolved'}</span>
-              <br />
-              Unit: {item.unit} <span style={{color: 'red'}}>{item.error['missingUnitName'] && 'Please confirm unit name'}</span>
-              <br />
-              Unit Quantity: {item.unitQuantity} <span style={{color: 'red'}}>{item.error['missingUnitQuantity'] && 'Please confirm unit quantity'}</span>
-              <br />
-              Unit Quantity In Milliliters: {item.unitQuantityInMilliliters} 
-              <br />
-              Markup Multiplier: {item.markupMultiplier}
-              <br />
-              Cost Percentage (%): {item.costPercentage}
-              <br />
-              Price Per {item.ozPerPour}oz Pour At (%){Number(item.costPercentage).toFixed(2)} Cost Percentage: <span style={{ fontSize: "16px", fontWeight: "bold" }}>{(item.pricePerPourAtCostPercentage)}</span>
-              <br />
-              Price Per Bottle At (%){Number(item.costPercentage).toFixed(2)} Cost Percentage: <span style={{ fontSize: "16px", fontWeight: "bold" }}>{item.pricePerBottleAtCostPercentage}</span>
-              <br />
-              Success: {item.success.description}
-              <br />
-              {Object.values(item.error).length > 0 && <span style={{ color: "red" }}>Error: {Object.values(item.error).join(", ")}</span>}
-            </div>
-          </div>
+            processedData={item}
+            setProcessedData={setProcessedData}
+            index={index}
+            searchQuery={searchQuery}
+            searchFilter={searchFilter}
+          />
         ))}
       </div>
     </div>
