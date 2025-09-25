@@ -4,7 +4,7 @@ import { defaultSlidingScale } from "../../../constants/calculator";
 import type { SlidingScale } from "../../../interfaces/calculator";
 import { BulkMarginEdgeProcessor } from "../BulkMarginEdgeProcessor/BulkMarginEdgeProcessor";
 
-export const ModularBeveragePricingCalculator = () => {
+export const ModularBeveragePricingCalculator = ({children}: {children: React.ReactNode}) => {
   const [wholeSaleBottlePrice, setWholeSaleBottlePrice] = useState<string>("");
   const [costPercentage, setCostPercentage] = useState<string>("18");
   const [markupMultiplier, setMarkupMultiplier] = useState<string | number>(deriveMarkupMultiplier(costPercentage));
@@ -116,6 +116,7 @@ export const ModularBeveragePricingCalculator = () => {
       <h1>
         Modular Beverage Pricing Calculator
       </h1>
+      {children}
       {buildInputs(wholesaleBottlePriceInputArray)}
       <br />
       <label> 
@@ -128,16 +129,16 @@ export const ModularBeveragePricingCalculator = () => {
       {
         slidingScale.isEnabled &&
         <>
-          {buildInputs(slidingScaleInputArray)}
           <div style={inputStyle}>
-          <label>
-            Unit Type:
-          </label>
-          <select value={slidingScale.unitType} onChange={(e) => handleOnChangeUnitType(e)}>
-            <option value="percentage">Percentage</option>
-            <option value="markupMultiplier">Markup Multiplier</option>
-          </select>
+            <label>
+              Bound Unit Type:
+            </label>
+            <select value={slidingScale.unitType} onChange={(e) => handleOnChangeUnitType(e)}>
+              <option value="percentage">Percentage %</option>
+              <option value="markupMultiplier">Markup Multiplier *</option>
+            </select>
           </div>
+          {buildInputs(slidingScaleInputArray)}
         </>
       }
       {

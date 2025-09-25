@@ -1,5 +1,5 @@
 export const Documentation = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpen: boolean) => void }) => {
-  const maxWidth = 500;
+  const maxWidth = 800;
   return (
     <div
       style={{
@@ -45,10 +45,8 @@ export const Documentation = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpe
       >
         <h1>How to Use the Calculator</h1>
         <p>
-          The Modular Beverage Pricing Calculator is a tool that helps you calculate the price of a beverage based on the cost of the beverage and the markup multiplier.
-        </p>
-        <p>
-          The calculator is designed to be used in a modular way, meaning that you can use it to calculate your desired markup price of a beverage based on the cost of the beverage and the markup multiplier. It can be set to use a sliding scale or a fixed markup multiplier.
+          This tool calculates the price of a beverage based on the cost of the beverage, markup multiplier, bottle size, and ounces per pour. 
+          It can use a sliding scale or fixed markup multiplier.
         </p>
         <h2>General Options</h2>
         <p>
@@ -76,7 +74,6 @@ export const Documentation = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpe
           <br />
           The ounces per pour is the number of ounces per serving.
           <br />
-          <br />
         </p>
         <h2>Markup Options</h2>
         <p>
@@ -90,7 +87,7 @@ export const Documentation = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpe
         </p>
         <h3>Sliding Scale</h3>
         <p>
-        The sliding scale is a range of prices that are calculated based on the cost of the beverage and the markup multiplier.
+          The sliding scale is a range of prices that are calculated based on the cost of the beverage and the markup multiplier.
           <br />
           <br />
           <strong>Lower Bound Cost</strong>
@@ -121,7 +118,6 @@ export const Documentation = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpe
         <p>
           The fixed markup multiplier uses a static markup multiplier or cost percentage to calculate the price of the beverage.
         </p>
-        <br />
         <h2>Formulas</h2>
         <h3>Price</h3>
         <p>

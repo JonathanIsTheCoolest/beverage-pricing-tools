@@ -14,11 +14,11 @@ const locationObject: { [key: string]: Location } = {
     description: "Modular Beverage Pricing Calculator",
     component: <ModularBeverageWrapper />
   },
-  wine: { 
-    name: "wine",
-    description: "Wine Pricing Calculator",
-    component: <WinePricingCalculator />
-  }
+  // wine: { 
+  //   name: "wine",
+  //   description: "Wine Pricing Calculator",
+  //   component: <WinePricingCalculator />
+  // }
 }
 
 const selectedStyle = {

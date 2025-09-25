@@ -9,12 +9,13 @@ export const ModularBeverageWrapper = () => {
     <div
       onClick={() => showDocumentation && setShowDocumentation(false)}
     >
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <button onClick={() => setShowDocumentation(!showDocumentation)}>
-          {showDocumentation ? "Hide Documentation" : "Show Documentation"}
-        </button>
-      </div>
-      <ModularBeveragePricingCalculator />
+      <ModularBeveragePricingCalculator>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <button onClick={() => setShowDocumentation(!showDocumentation)}>
+            {showDocumentation ? "Hide Documentation" : "Show Documentation"}
+          </button>
+        </div>
+      </ModularBeveragePricingCalculator>
       <Documentation isOpen={showDocumentation} setIsOpen={setShowDocumentation} />
     </div>
   );
