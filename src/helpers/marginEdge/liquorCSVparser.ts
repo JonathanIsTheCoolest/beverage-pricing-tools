@@ -1,5 +1,5 @@
 import Papa from "papaparse";
-import type { LiquorData } from "../../interfaces/marginEdge";
+import type { BeverageData } from "../../interfaces/marginEdge";
 
 const marginEdgeLiquorCSVparser = (csv: string | undefined) => {
   if (!csv) {
@@ -12,7 +12,7 @@ const marginEdgeLiquorCSVparser = (csv: string | undefined) => {
     dynamicTyping: false,
   });
 
-  return result.data as LiquorData[];
+  return result.data as BeverageData[];
 };
 
 export default marginEdgeLiquorCSVparser;

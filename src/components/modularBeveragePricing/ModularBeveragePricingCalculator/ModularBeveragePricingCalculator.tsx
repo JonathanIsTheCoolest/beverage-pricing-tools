@@ -73,8 +73,8 @@ export const ModularBeveragePricingCalculator = ({children}: {children: React.Re
   const slidingScaleInputArray = [ 
     { name: 'lowerBound', label: `Lower Bound ${slidingScale.unitType === 'percentage' ? 'Cost (%)' : 'Markup Multiplier'}:`, type: 'number', value: slidingScale.lowerBound, onChange: (e: React.ChangeEvent<HTMLInputElement>) => handleSlidingScaleChange(null, 'lowerBound', e.target.value), style: inputStyle },
     { name: 'upperBound', label: `Upper Bound ${slidingScale.unitType === 'percentage' ? 'Cost (%)' : 'Markup Multiplier'}:`, type: 'number', value: slidingScale.upperBound, onChange: (e: React.ChangeEvent<HTMLInputElement>) => handleSlidingScaleChange(null, 'upperBound', e.target.value), style: inputStyle },
-    { name: 'affectedPriceRangeFloor', label: 'Affected Price Range Floor:', type: 'number', value: slidingScale.affectedPriceRangeFloor, onChange: (e: React.ChangeEvent<HTMLInputElement>) => handleSlidingScaleChange(null, 'affectedPriceRangeFloor', e.target.value), style: inputStyle },
-    { name: 'affectedPriceRangeCeiling', label: 'Affected Price Range Ceiling:', type: 'number', value: slidingScale.affectedPriceRangeCeiling, onChange: (e: React.ChangeEvent<HTMLInputElement>) => handleSlidingScaleChange(null, 'affectedPriceRangeCeiling', e.target.value), style: inputStyle },
+    { name: 'affectedPriceRangeFloor', label: 'Affected Price Range Floor ($): ', type: 'number', value: slidingScale.affectedPriceRangeFloor, onChange: (e: React.ChangeEvent<HTMLInputElement>) => handleSlidingScaleChange(null, 'affectedPriceRangeFloor', e.target.value), style: inputStyle },
+    { name: 'affectedPriceRangeCeiling', label: 'Affected Price Range Ceiling ($): ', type: 'number', value: slidingScale.affectedPriceRangeCeiling, onChange: (e: React.ChangeEvent<HTMLInputElement>) => handleSlidingScaleChange(null, 'affectedPriceRangeCeiling', e.target.value), style: inputStyle },
   ]
 
   const wholesaleBottlePriceInputArray = [

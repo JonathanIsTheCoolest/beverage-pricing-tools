@@ -1,14 +1,46 @@
-export const marginEdgeLiquorUnitNames = [
-  {
+export const marginEdgeLiquorUnitNames = {
+  liter:{
     name: "Liter",
     measurementInMilliliters: 1000,
   },
-  {
+  fluidOunces:{
     name: "Fluid Ounces",
     measurementInMilliliters: 29.5735,
   },
-  {
+  milliliters:{
     name: "Milliliters",
     measurementInMilliliters: 1,
   }
-];
+};
+// export const marginEdgeLiquorUnitNames = [
+//   {
+//     name: "Liter",
+//     measurementInMilliliters: 1000,
+//   },
+//   {
+//     name: "Fluid Ounces",
+//     measurementInMilliliters: 29.5735,
+//   },
+//   {
+//     name: "Milliliters",
+//     measurementInMilliliters: 1,
+//   }
+// ];
+
+export const marginEdgeProcessingStatuses = {
+  success: {
+    description: 'Successfully Processed ✅',
+    name: 'success',
+    color: 'green',
+  },
+  partial: {
+    description: 'Partially Processed ⚠️',
+    name: 'partial',
+    color: 'yellow',
+  },
+  fail: {
+    description: 'Failed To Process ❌',
+    name: 'fail',
+    color: 'red',
+  },
+};

@@ -1,16 +1,20 @@
 import type { SearchFilter, SlidingScale } from "../interfaces/calculator";
 
-const liqourAndWineSearchFilters: SearchFilter[] = [
+const beverageSearchFilters: SearchFilter[] = [
   {
     name: "all",
     description: "All",
   },
   {
-    name: "successfullyProcessed",
+    name: "success",
     description: "Successfully Processed",
   },
   {
-    name: "failedToProcess",
+    name: "partial",
+    description: "Partially Processed",
+  },
+  {
+    name: "fail",
     description: "Failed To Process",
   },
 ]
@@ -27,4 +31,4 @@ const defaultSlidingScale: SlidingScale = {
   isEnabled: false,
 };  
 
-export { liqourAndWineSearchFilters, defaultSlidingScale };
+export { beverageSearchFilters, defaultSlidingScale };

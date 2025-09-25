@@ -1,4 +1,4 @@
-export interface LiquorData {
+export interface BeverageData {
   'Accounting Code': string;
   'Category': string;
   'Item Count': string;
@@ -9,15 +9,22 @@ export interface LiquorData {
   'Tax Exempt': string;
 }
 
-export interface ProcessedLiquorData {
+export interface ProcessedBeverageData {
   name: string;
-  price: string;
+  category: string;
+  price: string | number;
   unit: string;
-  unitQuantity: string;
-  unitQuantityInMilliliters: string;
-  ozPerPour: number;
-  costPercentage: number;
-  pricePerPourAtCostPercentage: string;
-  pricePerBottleAtCostPercentage: string;
-  markupMultiplier: number;
+  unitQuantity: string | number;
+  unitQuantityInMilliliters: string | number;
+  ozPerPour: string | number;
+  costPercentage: string | number;
+  markupMultiplier: string | number;
+  pricePerPourAtCostPercentage: string | number;
+  pricePerBottleAtCostPercentage: string | number;
+  success: {
+    description: string;
+    name: string;
+    color: string;
+  };
+  error: string[];
 }

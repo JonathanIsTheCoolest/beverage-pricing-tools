@@ -1,7 +1,7 @@
 import { useCSVDownloader } from "react-papaparse";
-import { liqourAndWineSearchFilters } from "../../../constants/calculator";
+import { beverageSearchFilters } from "../../../constants/calculator";
 import { useState } from "react";
-import type { ProcessedLiquorData } from "../../../interfaces/marginEdge";
+import type { ProcessedBeverageData } from "../../../interfaces/marginEdge";
 import type { SearchFilter, SlidingScale } from "../../../interfaces/calculator";
 import { bulkCsvRequest } from "../../../helpers/marginEdge/bulkCsvRequest";
 
@@ -9,9 +9,9 @@ export const BulkMarginEdgeProcessor = ({ markupMultiplier, costPercentage, ozPe
   const { CSVDownloader, Type } = useCSVDownloader();
 
   const [csvFile, setCsvFile] = useState<File | null>(null);
-  const [processedData, setProcessedData] = useState<ProcessedLiquorData[]>([]);
+  const [processedData, setProcessedData] = useState<ProcessedBeverageData[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [searchFilter, setSearchFilter] = useState<SearchFilter>(liqourAndWineSearchFilters[0]);
+  const [searchFilter, setSearchFilter] = useState<SearchFilter>(beverageSearchFilters[0]);
 
   const handleCsvFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCsvFile(e.target.files?.[0] || null);
@@ -20,7 +20,7 @@ export const BulkMarginEdgeProcessor = ({ markupMultiplier, costPercentage, ozPe
   const handleProcessData = async () => {
     if (csvFile) {
       const processedData = await bulkCsvRequest(csvFile, markupMultiplier, costPercentage, ozPerPour, slidingScale);
-      setProcessedData(processedData as ProcessedLiquorData[]);
+      setProcessedData(processedData as ProcessedBeverageData[]);
     }
   };
 
@@ -30,19 +30,17 @@ export const BulkMarginEdgeProcessor = ({ markupMultiplier, costPercentage, ozPe
     (document.getElementById("csvFileInput") as HTMLInputElement).value = "";
   };
 
-  const handleSearchFilterLogic = (item: ProcessedLiquorData) => { 
+  const handleSearchFilterLogic = (item: ProcessedBeverageData, searchFilter: SearchFilter) => { 
     if (searchFilter.name === "all") {
       return true;
-    } else if (searchFilter.name === "successfullyProcessed" && item.unit) {
-      return true;
-    } else if (searchFilter.name === "failedToProcess" && !item.unit) {
+    } else if (searchFilter.name === item.success.name) {
       return true;
     } else {
       return false;
     }
   }
 
-  const handleSearchQueryLogic = (item: ProcessedLiquorData) => {
+  const handleSearchQueryLogic = (item: ProcessedBeverageData) => {
     if (searchQuery.length > 0) {
       return item.name.toLowerCase().includes(searchQuery.toLowerCase());
     } else {
@@ -84,7 +82,7 @@ export const BulkMarginEdgeProcessor = ({ markupMultiplier, costPercentage, ozPe
         <div>
           <label>Search Filter:</label>
           {
-            liqourAndWineSearchFilters.map((filter) => {
+            beverageSearchFilters.map((filter) => {
               return (
                 <button 
                   key={filter.name}
@@ -109,20 +107,20 @@ export const BulkMarginEdgeProcessor = ({ markupMultiplier, costPercentage, ozPe
       <br />
       <br />
       <div>
-        {processedData.map((item: ProcessedLiquorData, index: number) => (
+        {processedData.map((item: ProcessedBeverageData, index: number) => (
           <div 
             key={item.name}
             style={{
-              display: handleSearchQueryLogic(item) && handleSearchFilterLogic(item) ? "block" : "none",
+              display: handleSearchQueryLogic(item) && handleSearchFilterLogic(item, searchFilter) ? "block" : "none",
             }}
           >
-            <h3>Item {index + 1} {item.unit ? "Successfully Processed ✅" : " Could Not Be Processed ❌"}</h3>
+            <h3>Item {index + 1} {item.success.description}</h3>
             <div>
               
             </div>
             <div
               style={{
-                border: item.unit ? "3px solid green" : "3px solid red",
+                border: `3px solid ${item.success.color}`,
                 padding: "10px",
                 margin: "10px",
                 borderRadius: "5px",
@@ -130,7 +128,9 @@ export const BulkMarginEdgeProcessor = ({ markupMultiplier, costPercentage, ozPe
             >
               Name: <span style={{ fontSize: "16px", fontWeight: "bold" }}>{item.name}</span>
               <br />
-              Price: {item.price}
+              Category: {item.category}
+              <br />
+              Price: ${item.price}
               <br />
               Unit: {item.unit}
               <br />
@@ -140,11 +140,15 @@ export const BulkMarginEdgeProcessor = ({ markupMultiplier, costPercentage, ozPe
               <br />
               Markup Multiplier: {item.markupMultiplier}
               <br />
-              Cost Percentage: {item.costPercentage}
+              Cost Percentage (%): {item.costPercentage}
               <br />
-              Price Per {item.ozPerPour}oz Pour At %{item.costPercentage.toFixed(2)} Cost Percentage: <span style={{ fontSize: "16px", fontWeight: "bold" }}>{item.pricePerPourAtCostPercentage}</span>
+              Price Per {item.ozPerPour}oz Pour At (%){Number(item.costPercentage).toFixed(2)} Cost Percentage: <span style={{ fontSize: "16px", fontWeight: "bold" }}>{(item.pricePerPourAtCostPercentage)}</span>
               <br />
-              Price Per Bottle At %{item.costPercentage.toFixed(2)} Cost Percentage: <span style={{ fontSize: "16px", fontWeight: "bold" }}>{item.pricePerBottleAtCostPercentage}</span>
+              Price Per Bottle At (%){Number(item.costPercentage).toFixed(2)} Cost Percentage: <span style={{ fontSize: "16px", fontWeight: "bold" }}>{item.pricePerBottleAtCostPercentage}</span>
+              <br />
+              Success: {item.success.description}
+              <br />
+              {item.error.length > 0 && <span style={{ color: "red" }}>Error: {item.error.join(", ")}</span>}
             </div>
           </div>
         ))}
