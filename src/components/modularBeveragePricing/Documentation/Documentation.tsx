@@ -13,6 +13,7 @@ export const Documentation = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpe
         backgroundColor: "white",
         borderLeft: "2px solid black",
         boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.5)",
+        color: "black",
       }}
     >
       <div
