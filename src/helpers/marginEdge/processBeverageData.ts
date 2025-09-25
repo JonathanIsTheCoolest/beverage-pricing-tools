@@ -56,7 +56,7 @@ export const processBeverageData = (data: BeverageData[], markupMultiplier: numb
       error.push(csvParsingErrorMessages.missingPrice);
     }
 
-    const unitQuantityInMilliliters = Number(unitQuantity) * (marginEdgeLiquorUnitNames[unitName.toLowerCase() as keyof typeof marginEdgeLiquorUnitNames].measurementInMilliliters || 0);
+    const unitQuantityInMilliliters = Number(unitQuantity) * (marginEdgeLiquorUnitNames[unitName.toLowerCase() as keyof typeof marginEdgeLiquorUnitNames]?.measurementInMilliliters || 0);
 
     const pricePerOzAtCostPercentageValue = Math.max(modularBeveragePricingFormula(latestPrice, markupMultiplier, unitQuantityInMilliliters, ozPerPour), Number(slidingScale.pricePerPourFloor)).toFixed(2)
     const pricePerBottleAtCostPercentageValue = Math.max(bottlePricingFormula(latestPrice, markupMultiplier), Number(slidingScale.pricePerBottleFloor)).toFixed(2)
