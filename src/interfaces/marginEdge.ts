@@ -26,5 +26,5 @@ export interface ProcessedBeverageData {
     name: string;
     color: string;
   };
-  error: string[];
+  error: {[type: string]: string};
 }

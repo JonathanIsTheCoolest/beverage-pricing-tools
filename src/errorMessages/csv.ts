@@ -1,6 +1,6 @@
 export const csvParsingErrorMessages = {
   missingData: "Missing data",
-  missingUnit: "Missing unit name",
+  missingUnitName: "Missing unit name",
   missingUnitQuantity: "Missing unit quantity",
   missingPrice: "Missing price",
   missingName: "Missing name",

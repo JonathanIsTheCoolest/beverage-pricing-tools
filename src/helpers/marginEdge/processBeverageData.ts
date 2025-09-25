@@ -4,6 +4,7 @@ import type { SlidingScale } from "../../interfaces/calculator";
 import { csvParsingErrorMessages } from "../../errorMessages/csv";
 import { modularBeveragePricingFormula, bottlePricingFormula, deriveSlidingScaleMarkupMultiplier } from "../pricingFormulas/formulas";
 import { marginEdgeProcessingStatuses } from "../../constants/marginEdge";
+import { toCamelCase } from "../general/caseFormatting";
 
 const getUnitQuantity = (string: string) => {
   const numberMatch = string.match(/(\d+(\.\d+)?)/);
@@ -17,7 +18,7 @@ const getUnitQuantity = (string: string) => {
 export const processBeverageData = (data: BeverageData[], markupMultiplier: number, costPercentage: number | string, ozPerPour: number, slidingScale: SlidingScale) => {
   return data.map((row) => {
     let success = marginEdgeProcessingStatuses.success;
-    let error: string[] = [];
+    let error: {[key: string]: string} = {};
     let unitName = '';
     let unitQuantity: number | string = '';
     const category = row["Category"];
@@ -42,21 +43,21 @@ export const processBeverageData = (data: BeverageData[], markupMultiplier: numb
       unitQuantity = 1;
     } else if (!unitName && !unitQuantity) {
       success = marginEdgeProcessingStatuses.partial;
-      error.push(csvParsingErrorMessages.missingUnitQuantity);
+      error[toCamelCase(csvParsingErrorMessages.missingUnitQuantity)] = csvParsingErrorMessages.missingUnitQuantity;
     }
 
     if (!unitName) {
-      error.push(csvParsingErrorMessages.missingUnit);
+      error[toCamelCase(csvParsingErrorMessages.missingUnitName)] = csvParsingErrorMessages.missingUnitName;
       unitName = 'Milliliters';
       unitQuantity = 750;
     }
 
     if (Number(latestPrice) <= 0) {
       success = marginEdgeProcessingStatuses.fail;
-      error.push(csvParsingErrorMessages.missingPrice);
+      error[toCamelCase(csvParsingErrorMessages.missingPrice)] = csvParsingErrorMessages.missingPrice;
     }
 
-    const unitQuantityInMilliliters = Number(unitQuantity) * (marginEdgeLiquorUnitNames[unitName.toLowerCase() as keyof typeof marginEdgeLiquorUnitNames]?.measurementInMilliliters || 0);
+    const unitQuantityInMilliliters = Number(unitQuantity) * (marginEdgeLiquorUnitNames[toCamelCase(unitName) as keyof typeof marginEdgeLiquorUnitNames]?.measurementInMilliliters || 0);
 
     const pricePerOzAtCostPercentageValue = Math.max(modularBeveragePricingFormula(latestPrice, markupMultiplier, unitQuantityInMilliliters, ozPerPour), Number(slidingScale.pricePerPourFloor)).toFixed(2)
     const pricePerBottleAtCostPercentageValue = Math.max(bottlePricingFormula(latestPrice, markupMultiplier), Number(slidingScale.pricePerBottleFloor)).toFixed(2)

@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { ProcessedBeverageData } from "../../../interfaces/marginEdge";
 import type { SearchFilter, SlidingScale } from "../../../interfaces/calculator";
 import { bulkCsvRequest } from "../../../helpers/marginEdge/bulkCsvRequest";
+import { csvParsingErrorMessages } from "../../../errorMessages/csv";
 
 export const BulkMarginEdgeProcessor = ({ markupMultiplier, costPercentage, ozPerPour, slidingScale }: { markupMultiplier: number, costPercentage: number, ozPerPour: number, slidingScale: SlidingScale }) => {
   const { CSVDownloader, Type } = useCSVDownloader();
@@ -130,11 +131,11 @@ export const BulkMarginEdgeProcessor = ({ markupMultiplier, costPercentage, ozPe
               <br />
               Category: {item.category}
               <br />
-              Price: ${item.price}
+              Price: ${item.price} <span style={{color: 'red'}}>{item.error['missingPrice'] && 'Item price must be resolved'}</span>
               <br />
-              Unit: {item.unit}
+              Unit: {item.unit} <span style={{color: 'red'}}>{item.error['missingUnitName'] && 'Please confirm unit name'}</span>
               <br />
-              Unit Quantity: {item.unitQuantity}
+              Unit Quantity: {item.unitQuantity} <span style={{color: 'red'}}>{item.error['missingUnitQuantity'] && 'Please confirm unit quantity'}</span>
               <br />
               Unit Quantity In Milliliters: {item.unitQuantityInMilliliters} 
               <br />
@@ -148,7 +149,7 @@ export const BulkMarginEdgeProcessor = ({ markupMultiplier, costPercentage, ozPe
               <br />
               Success: {item.success.description}
               <br />
-              {item.error.length > 0 && <span style={{ color: "red" }}>Error: {item.error.join(", ")}</span>}
+              {Object.values(item.error).length > 0 && <span style={{ color: "red" }}>Error: {Object.values(item.error).join(", ")}</span>}
             </div>
           </div>
         ))}
