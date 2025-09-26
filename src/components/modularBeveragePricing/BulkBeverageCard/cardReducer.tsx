@@ -19,8 +19,8 @@ export const cardReducer = (state: ProcessedBeverageDataWithCardReducerPayload, 
   switch (type) {
       case "setPrice":
           return { ...state, price: payload as CardReducerPayload, error: returnUpdatedErrorObject(state, action) }
-      case "setUnit":
-          return { ...state, unit: payload as CardReducerPayload, error: returnUpdatedErrorObject(state, action) }
+      case "setUnitName":
+          return { ...state, unitName: payload as CardReducerPayload, error: returnUpdatedErrorObject(state, action) }
       case "setUnitQuantity":
           return { ...state, unitQuantity: payload as CardReducerPayload, error: returnUpdatedErrorObject(state, action) }
       default:

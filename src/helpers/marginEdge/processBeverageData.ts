@@ -66,7 +66,7 @@ export const processBeverageData = (data: BeverageData[], markupMultiplier: numb
       name: row["Name"],
       category: category,
       price: latestPrice,
-      unit: unitName,
+      unitName: unitName,
       unitQuantity: unitQuantity,
       unitQuantityInMilliliters: unitQuantityInMilliliters,
       ozPerPour: ozPerPour,

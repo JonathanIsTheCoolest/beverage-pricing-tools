@@ -19,7 +19,7 @@ export const BulkBeverageCard = (
   const INITIAL_STATE: ProcessedBeverageDataWithCardReducerPayload = {
     ...processedData,
     price: buildPayloadState(processedData, "price") as CardReducerPayload,
-    unit: buildPayloadState(processedData, "unit") as CardReducerPayload,
+    unitName: buildPayloadState(processedData, "unitName") as CardReducerPayload,
     unitQuantity: buildPayloadState(processedData, "unitQuantity") as CardReducerPayload
   }
 
@@ -54,7 +54,7 @@ export const BulkBeverageCard = (
         <br />
         Price: ${processedData.price} <span style={{color: 'red'}}>{processedData.error['missingPrice'] && 'Item price must be resolved'}</span>
         <br />
-        Unit: {processedData.unit} <span style={{color: 'red'}}>{processedData.error['missingUnitName'] && 'Please confirm unit name'}</span>
+        Unit Name: {processedData.unitName} <span style={{color: 'red'}}>{processedData.error['missingUnitName'] && 'Please confirm unit name'}</span>
         <br />
         Unit Quantity: {processedData.unitQuantity} <span style={{color: 'red'}}>{processedData.error['missingUnitQuantity'] && 'Please confirm unit quantity'}</span>
         <br />

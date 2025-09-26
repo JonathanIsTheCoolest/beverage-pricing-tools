@@ -40,12 +40,12 @@ interface BeverageDataBase {
 
 export interface ProcessedBeverageData extends BeverageDataBase {
   price: string | number;
-  unit: string;
+  unitName: string;
   unitQuantity: string | number;
 }
 
 export interface ProcessedBeverageDataWithCardReducerPayload extends BeverageDataBase {
   price: CardReducerPayload;
-  unit: CardReducerPayload;
+  unitName: CardReducerPayload;
   unitQuantity: CardReducerPayload;
 }
