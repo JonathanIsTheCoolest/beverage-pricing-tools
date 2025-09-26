@@ -9,22 +9,43 @@ export interface BeverageData {
   'Tax Exempt': string;
 }
 
-export interface ProcessedBeverageData {
+export interface ErrorObject {
+  [type: string]: string;
+}
+
+export interface SuccessObject {
+  description: string;
+  name: string;
+  color: string;
+}
+
+export interface CardReducerPayload {
+  value: string | number
+  isReadyForProcessing: boolean
+  errorKey: string
+}
+
+interface BeverageDataBase {
   name: string;
   category: string;
-  price: string | number;
-  unit: string;
-  unitQuantity: string | number;
   unitQuantityInMilliliters: string | number;
   ozPerPour: string | number;
   costPercentage: string | number;
   markupMultiplier: string | number;
   pricePerPourAtCostPercentage: string | number;
   pricePerBottleAtCostPercentage: string | number;
-  success: {
-    description: string;
-    name: string;
-    color: string;
-  };
-  error: {[type: string]: string};
+  success: SuccessObject;
+  error: ErrorObject;
+}
+
+export interface ProcessedBeverageData extends BeverageDataBase {
+  price: string | number;
+  unit: string;
+  unitQuantity: string | number;
+}
+
+export interface ProcessedBeverageDataWithCardReducerPayload extends BeverageDataBase {
+  price: CardReducerPayload;
+  unit: CardReducerPayload;
+  unitQuantity: CardReducerPayload;
 }

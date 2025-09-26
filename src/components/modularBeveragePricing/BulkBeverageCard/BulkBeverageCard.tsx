@@ -1,11 +1,35 @@
-import type { Dispatch, SetStateAction } from "react"
-
-import type { ProcessedBeverageData } from "../../../interfaces/marginEdge"
+import { useReducer, type Dispatch, type SetStateAction } from "react"
+import type { CardReducerPayload, ProcessedBeverageData, ProcessedBeverageDataWithCardReducerPayload } from "../../../interfaces/marginEdge"
 import { handleSearchFilterLogic, handleSearchQueryLogic } from "../../../helpers/marginEdge/search"
 import type { SearchFilter } from "../../../interfaces/calculator"
+import { cardReducer } from "./cardReducer"
+import { formatErrorKey } from "../../../helpers/general/caseFormatting"
 
-export const BulkBeverageCard = ({processedData, setProcessedData, searchQuery, searchFilter, index}: 
-  {processedData: ProcessedBeverageData, setProcessedData: Dispatch<SetStateAction<ProcessedBeverageData[]>>, searchQuery: string, searchFilter: SearchFilter, index: number}) => {
+export const BulkBeverageCard = (
+    {processedData, setProcessedData, searchQuery, searchFilter, index}: 
+    {processedData: ProcessedBeverageData, setProcessedData: Dispatch<SetStateAction<ProcessedBeverageData[]>>, searchQuery: string, searchFilter: SearchFilter, index: number}
+) => {
+  const buildPayloadState = (processedData: ProcessedBeverageData, key: keyof ProcessedBeverageData) => {
+    return {
+      value: processedData[key],
+      isReadyForProcessing: false,
+      errorKey: formatErrorKey(key)
+    }
+  }
+  const INITIAL_STATE: ProcessedBeverageDataWithCardReducerPayload = {
+    ...processedData,
+    price: buildPayloadState(processedData, "price") as CardReducerPayload,
+    unit: buildPayloadState(processedData, "unit") as CardReducerPayload,
+    unitQuantity: buildPayloadState(processedData, "unitQuantity") as CardReducerPayload
+  }
+
+  const [state, dispatch] = useReducer(cardReducer, INITIAL_STATE)
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    dispatch({ type: `set${name}`, payload: { value, isReadyForProcessing: false, errorKey: formatErrorKey(name) } })
+  }
+
   return (
     <div 
       style={{
