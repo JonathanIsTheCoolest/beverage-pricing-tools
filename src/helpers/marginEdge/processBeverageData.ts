@@ -1,4 +1,4 @@
-import { marginEdgeLiquorUnitNames } from "../../constants/marginEdge";
+import { marginEdgeBevereageUnitNames } from "../../constants/marginEdge";
 import type { BeverageData } from "../../interfaces/marginEdge";
 import type { SlidingScale } from "../../interfaces/calculator";
 import { csvParsingErrorMessages } from "../../errorMessages/csv";
@@ -29,7 +29,7 @@ export const processBeverageData = (data: BeverageData[], markupMultiplier: numb
       costPercentage = (100 / markupMultiplier);
     }
 
-    const unit = Object.values(marginEdgeLiquorUnitNames).find((unit) => {
+    const unit = Object.values(marginEdgeBevereageUnitNames).find((unit) => {
       const { name } = unit;
       if (row["Report By Unit"].includes(name)) {
         return unit;
@@ -57,7 +57,7 @@ export const processBeverageData = (data: BeverageData[], markupMultiplier: numb
       error[toCamelCase(csvParsingErrorMessages.missingPrice)] = csvParsingErrorMessages.missingPrice;
     }
 
-    const unitQuantityInMilliliters = Number(unitQuantity) * (marginEdgeLiquorUnitNames[toCamelCase(unitName) as keyof typeof marginEdgeLiquorUnitNames]?.measurementInMilliliters || 0);
+    const unitQuantityInMilliliters = Number(unitQuantity) * (marginEdgeBevereageUnitNames[toCamelCase(unitName) as keyof typeof marginEdgeBevereageUnitNames]?.measurementInMilliliters || 0);
 
     const pricePerOzAtCostPercentageValue = Math.max(modularBeveragePricingFormula(latestPrice, markupMultiplier, unitQuantityInMilliliters, ozPerPour), Number(slidingScale.pricePerPourFloor)).toFixed(2)
     const pricePerBottleAtCostPercentageValue = Math.max(bottlePricingFormula(latestPrice, markupMultiplier), Number(slidingScale.pricePerBottleFloor)).toFixed(2)

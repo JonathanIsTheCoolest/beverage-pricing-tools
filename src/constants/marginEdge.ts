@@ -1,4 +1,4 @@
-export const marginEdgeLiquorUnitNames = {
+export const marginEdgeBevereageUnitNames = {
   liter:{
     name: "Liter",
     measurementInMilliliters: 1000,

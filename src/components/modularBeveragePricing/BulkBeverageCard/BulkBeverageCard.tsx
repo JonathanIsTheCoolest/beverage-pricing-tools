@@ -3,7 +3,8 @@ import type { CardReducerPayload, ProcessedBeverageData, ProcessedBeverageDataWi
 import { handleSearchFilterLogic, handleSearchQueryLogic } from "../../../helpers/marginEdge/search"
 import type { SearchFilter } from "../../../interfaces/calculator"
 import { cardReducer } from "./cardReducer"
-import { formatErrorKey } from "../../../helpers/general/caseFormatting"
+import { formatErrorKey, capitalizeFirstLetter } from "../../../helpers/general/caseFormatting"
+import { marginEdgeBevereageUnitNames } from "../../../constants/marginEdge"
 
 export const BulkBeverageCard = (
     {processedData, setProcessedData, searchQuery, searchFilter, index}: 
@@ -12,6 +13,7 @@ export const BulkBeverageCard = (
   const buildPayloadState = (processedData: ProcessedBeverageData, key: keyof ProcessedBeverageData) => {
     return {
       value: processedData[key],
+      isUpdating: false,
       isReadyForProcessing: false,
       errorKey: formatErrorKey(key)
     }
@@ -25,21 +27,36 @@ export const BulkBeverageCard = (
 
   const [state, dispatch] = useReducer(cardReducer, INITIAL_STATE)
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    dispatch({ type: `set${name}`, payload: { value, isReadyForProcessing: false, errorKey: formatErrorKey(name) } })
+  const handleInputChange = (name: string, key: string, value: string | number | boolean) => {
+    dispatch({ 
+      type: `set${capitalizeFirstLetter(name)}`, 
+      payload: { ...((state as any)[name] as CardReducerPayload), [key]: value }
+    })
   }
 
   return (
     <div 
       style={{
+        position: "relative",
         display: handleSearchQueryLogic(processedData, searchQuery) && handleSearchFilterLogic(processedData, searchFilter) ? "block" : "none",
       }}
     >
-      <h3>Item {index + 1} {processedData.success.description}</h3>
-      <div>
-        
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          position: "absolute",
+          top: "0",
+          right: "0",
+        }}
+      >
+        <button onClick={() => dispatch({ type: "reset", payload: INITIAL_STATE })}>Reset</button>
+        <button>Preview</button>
+        <button>Save</button>
+        <button>Delete</button>
       </div>
+      <h3>Item {index + 1} {processedData.success.description}</h3>
       <div
         style={{
           border: `3px solid ${processedData.success.color}`,
@@ -52,11 +69,33 @@ export const BulkBeverageCard = (
         <br />
         Category: {processedData.category}
         <br />
-        Price: ${processedData.price} <span style={{color: 'red'}}>{processedData.error['missingPrice'] && 'Item price must be resolved'}</span>
+        Price: $
+        {
+          state.price.isUpdating ?
+          <input type="text" name="price" value={state.price.value} onChange={(e) => handleInputChange("price", "value", e.target.value)} /> :
+          <>{processedData.price} <span style={{color: 'red'}}>{processedData.error['missingPrice'] && 'Item price must be resolved'}</span></>
+        }
+        <button onClick={() => handleInputChange("price", "isUpdating", !state.price.isUpdating)}>Update</button>
         <br />
-        Unit Name: {processedData.unitName} <span style={{color: 'red'}}>{processedData.error['missingUnitName'] && 'Please confirm unit name'}</span>
+        Unit Name:
+        {
+          state.unitName.isUpdating ?
+          <select name="unitName" value={state.unitName.value} onChange={(e) => handleInputChange("unitName", "value", e.target.value)}>
+            {Object.values(marginEdgeBevereageUnitNames).map((unit) => (
+              <option key={unit.name} value={unit.name}>{unit.name}</option>
+            ))}
+          </select> :
+          <>{processedData.unitName} <span style={{color: 'red'}}>{processedData.error['missingUnitName'] && 'Please confirm unit name'}</span></>
+        }
+        <button onClick={() => handleInputChange("unitName", "isUpdating", !state.unitName.isUpdating)}>Update</button>
         <br />
-        Unit Quantity: {processedData.unitQuantity} <span style={{color: 'red'}}>{processedData.error['missingUnitQuantity'] && 'Please confirm unit quantity'}</span>
+        Unit Quantity:
+        {
+          state.unitQuantity.isUpdating ?
+          <input type="text" name="unitQuantity" value={state.unitQuantity.value} onChange={(e) => handleInputChange("unitQuantity", "value", e.target.value)} /> :
+          <>{processedData.unitQuantity} <span style={{color: 'red'}}>{processedData.error['missingUnitQuantity'] && 'Please confirm unit quantity'}</span></>
+        }
+        <button onClick={() => handleInputChange("unitQuantity", "isUpdating", !state.unitQuantity.isUpdating)}>Update</button>
         <br />
         Unit Quantity In Milliliters: {processedData.unitQuantityInMilliliters} 
         <br />

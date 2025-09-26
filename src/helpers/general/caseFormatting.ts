@@ -4,6 +4,10 @@ export const toCamelCase = (string: string) => {
   }).join('')
 }
 
+export const capitalizeFirstLetter = (string: string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1)
+}
+
 export const formatErrorKey = (string: string) => {
-  return `missing${string.charAt(0).toUpperCase() + string.slice(1)}`
+  return `missing${capitalizeFirstLetter(string)}`
 }
