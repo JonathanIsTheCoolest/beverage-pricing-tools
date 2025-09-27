@@ -21,7 +21,6 @@ export interface SuccessObject {
 
 export interface CardReducerPayload {
   value: string | number
-  isUpdating: boolean
   isReadyForProcessing: boolean
   errorKey: string
 }
