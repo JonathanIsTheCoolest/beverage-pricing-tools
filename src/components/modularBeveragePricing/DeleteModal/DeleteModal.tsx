@@ -19,6 +19,7 @@ export const DeleteModal = ({ setIsOpen, deleteFunction, productName }: { setIsO
           height: "fit-content",
           width: "50%",
           backgroundColor: "rgba(0, 0, 0, 0.8)",
+          color: "white",
           padding: '20px',
           borderRadius: '10px',
           zIndex: "1000",
