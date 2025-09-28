@@ -7,6 +7,7 @@ import { formatErrorKey } from "../../../helpers/general/caseFormatting"
 import { marginEdgeBevereageUnitNames, marginEdgeProcessingStatuses } from "../../../constants/marginEdge"
 import { strictNumberHandler } from "../../../helpers/general/inputHandlers"
 import { DeleteModal } from "../DeleteModal/DeleteModal"
+import { SuccessPopupModal } from "../SuccessPopupModal/SuccessPopupModal"
 
 export const BulkBeverageCard = (
     {processedData, setProcessedData, searchQuery, searchFilter, index, slidingScale}: 
@@ -38,6 +39,7 @@ export const BulkBeverageCard = (
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const [isPreviewing, setIsPreviewing] = useState<boolean>(false)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false)
+  const [isSuccessPopupModalOpen, setIsSuccessPopupModalOpen] = useState<boolean>(false)
 
   const handleInputChange = (name: string, key: string, value: string | number | boolean) => {
     const payload = {[name]: { ...((state as any)[name] as CardReducerKey), [key]: value }} as CardReducerPayload
@@ -61,6 +63,7 @@ export const BulkBeverageCard = (
   const handleSave = () => {
     setIsEditing(false)
     setIsPreviewing(false)
+    setIsSuccessPopupModalOpen(true)
     if (!Object.keys(state.error).length) {
       setProcessedData((prev) => {
         const newProcessedData = {
@@ -95,6 +98,14 @@ export const BulkBeverageCard = (
       window.removeEventListener("keydown", event)
     }
   }, [handlePreview])
+
+  useEffect(() => {
+    const event = (e: KeyboardEvent) => {e.key === "Enter" && isPreviewing && handleSave()}
+    window.addEventListener("keydown", event)
+    return () => {
+      window.removeEventListener("keydown", event)
+    }
+  }, [handleSave])
 
   return (
     <div 
@@ -179,6 +190,7 @@ export const BulkBeverageCard = (
         <br />
         {Object.values(ifEditing(processedData.error, error)).length > 0 && <span style={{ color: "red" }}>Error: {Object.values(ifEditing(processedData.error, error)).join(", ")}</span>}
       </div>
+      {isSuccessPopupModalOpen && <SuccessPopupModal setIsOpen={setIsSuccessPopupModalOpen} errorObject={error} productName={processedData.name} />}
     </div>
   )
 }

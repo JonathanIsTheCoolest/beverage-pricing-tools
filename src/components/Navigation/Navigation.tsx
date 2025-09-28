@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { ModularBeverageWrapper } from "../modularBeveragePricing/ModularBeverageWrapper/ModularBeverageWrapper";
-import { WinePricingCalculator } from "../WinePricingCalculator/WinePricingCalcualtor";
 
 interface Location {
   name: string;
@@ -14,11 +13,6 @@ const locationObject: { [key: string]: Location } = {
     description: "Modular Beverage Pricing Calculator",
     component: <ModularBeverageWrapper />
   },
-  // wine: { 
-  //   name: "wine",
-  //   description: "Wine Pricing Calculator",
-  //   component: <WinePricingCalculator />
-  // }
 }
 
 const selectedStyle = {
