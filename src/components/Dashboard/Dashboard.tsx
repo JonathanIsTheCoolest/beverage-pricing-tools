@@ -4,7 +4,6 @@ export const Dashboard = () => {
   return (
     <div      
       style={{
-        // margin: '10px',
         display: "flex",
         flexDirection: "column",
         justifyContent: "flex-start",

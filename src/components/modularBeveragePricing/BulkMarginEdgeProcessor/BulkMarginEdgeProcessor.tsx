@@ -1,6 +1,6 @@
 import { useCSVDownloader } from "react-papaparse";
 import { beverageSearchFilters } from "../../../constants/calculator";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import type { ProcessedBeverageData } from "../../../interfaces/marginEdge";
 import type { SearchFilter, SlidingScale } from "../../../interfaces/calculator";
 import { bulkCsvRequest } from "../../../helpers/marginEdge/bulkCsvRequest";
@@ -98,7 +98,10 @@ export const BulkMarginEdgeProcessor = ({ markupMultiplier, costPercentage, ozPe
       <br />
       <br />
       <div>
-        <h3>Filtered Data: {filterCount.current} product{filterCount.current === 1 ? '' : 's'} match{filterCount.current === 1 ? 'es' : ''} the search criteria</h3>
+        {
+          processedData.length > 0 &&
+          <h3>Filtered Data: {filterCount.current} product{filterCount.current === 1 ? '' : 's'} match{filterCount.current === 1 ? 'es' : ''} the search criteria</h3>
+        }
         {processedData.map((item: ProcessedBeverageData, index: number) => {
           const {name} = item
           if (item.name.toLowerCase().includes(searchQuery.toLowerCase()) && (searchFilter.name === item.success.name || searchFilter.name === 'all')) {
@@ -113,6 +116,7 @@ export const BulkMarginEdgeProcessor = ({ markupMultiplier, costPercentage, ozPe
             searchQuery={searchQuery}
             searchFilter={searchFilter}
             slidingScale={slidingScale}
+            filterRef={filterCount}
           />
         )})}
       </div>
