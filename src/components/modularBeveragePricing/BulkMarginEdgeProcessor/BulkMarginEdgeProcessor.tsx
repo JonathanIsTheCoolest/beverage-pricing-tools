@@ -1,6 +1,6 @@
 import { useCSVDownloader } from "react-papaparse";
 import { beverageSearchFilters } from "../../../constants/calculator";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import type { ProcessedBeverageData } from "../../../interfaces/marginEdge";
 import type { SearchFilter, SlidingScale } from "../../../interfaces/calculator";
 import { bulkCsvRequest } from "../../../helpers/marginEdge/bulkCsvRequest";
@@ -9,6 +9,7 @@ import { BulkBeverageCard } from "../BulkBeverageCard/BulkBeverageCard";
 export const BulkMarginEdgeProcessor = ({ markupMultiplier, costPercentage, ozPerPour, slidingScale }: { markupMultiplier: number, costPercentage: number, ozPerPour: number, slidingScale: SlidingScale }) => {
   const { CSVDownloader, Type } = useCSVDownloader();
 
+  const filterCount = useRef<number>(0)
   const [csvFile, setCsvFile] = useState<File | null>(null);
   const [processedData, setProcessedData] = useState<ProcessedBeverageData[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -28,8 +29,15 @@ export const BulkMarginEdgeProcessor = ({ markupMultiplier, costPercentage, ozPe
   const handleRemoveFile = () => {
     setCsvFile(null);
     setProcessedData([]);
+    filterCount.current = 0;
     (document.getElementById("csvFileInput") as HTMLInputElement).value = "";
   };
+
+  const handleSearch = (filter: SearchFilter, query: string) => {
+    setSearchQuery(query)
+    setSearchFilter(filter)
+    filterCount.current = 0
+  }
 
   return (
     <div>
@@ -69,7 +77,7 @@ export const BulkMarginEdgeProcessor = ({ markupMultiplier, costPercentage, ozPe
               return (
                 <button 
                   key={filter.name}
-                  onClick={() => setSearchFilter(filter)}
+                  onClick={() => handleSearch(filter, searchQuery)}
                   style={{
                     backgroundColor: searchFilter.name === filter.name ? "red" : "white",
                     color: searchFilter.name === filter.name ? "white" : "black",
@@ -84,15 +92,21 @@ export const BulkMarginEdgeProcessor = ({ markupMultiplier, costPercentage, ozPe
           }
           <br /><br />
           <label>Search Product Name:</label>
-          <input type="text" placeholder="Search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+          <input type="text" placeholder="Search" value={searchQuery} onChange={(e) => handleSearch(searchFilter, e.target.value)} />
         </div>
       }
       <br />
       <br />
       <div>
-        {processedData.map((item: ProcessedBeverageData, index: number) => (
+        <h3>Filtered Data: {filterCount.current} product{filterCount.current === 1 ? '' : 's'} match{filterCount.current === 1 ? 'es' : ''} the search criteria</h3>
+        {processedData.map((item: ProcessedBeverageData, index: number) => {
+          const {name} = item
+          if (item.name.toLowerCase().includes(searchQuery.toLowerCase()) && (searchFilter.name === item.success.name || searchFilter.name === 'all')) {
+            filterCount.current++
+          }
+          return(
           <BulkBeverageCard
-            key={item.name}
+            key={name}
             processedData={item}
             setProcessedData={setProcessedData}
             index={index}
@@ -100,7 +114,7 @@ export const BulkMarginEdgeProcessor = ({ markupMultiplier, costPercentage, ozPe
             searchFilter={searchFilter}
             slidingScale={slidingScale}
           />
-        ))}
+        )})}
       </div>
     </div>
   )
