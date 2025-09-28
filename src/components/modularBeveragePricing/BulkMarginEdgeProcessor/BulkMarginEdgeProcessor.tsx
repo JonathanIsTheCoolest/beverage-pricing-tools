@@ -50,10 +50,10 @@ export const BulkMarginEdgeProcessor = ({ markupMultiplier, costPercentage, ozPe
       {
         processedData.length > 0 &&
         <CSVDownloader
-        type={Type.Button}
-        filename={`${csvFile?.name}-processedData.csv`}
-        bom /* helps Excel with UTF-8 */
-        data={processedData}
+          type={Type.Button}
+          filename={`${csvFile?.name}-processedData.csv`}
+          bom /* helps Excel with UTF-8 */
+          data={processedData}
         >
           Download CSV
         </CSVDownloader>
@@ -98,6 +98,7 @@ export const BulkMarginEdgeProcessor = ({ markupMultiplier, costPercentage, ozPe
             index={index}
             searchQuery={searchQuery}
             searchFilter={searchFilter}
+            slidingScale={slidingScale}
           />
         ))}
       </div>

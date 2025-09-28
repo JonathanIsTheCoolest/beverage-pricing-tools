@@ -1,5 +1,7 @@
 import { slidingScaleErrorMessages } from "../../errorMessages/caluculator";
 import type { SlidingScale } from "../../interfaces/calculator";
+import { toCamelCase } from "../general/caseFormatting";
+import { marginEdgeBevereageUnitNames } from "../../constants/marginEdge";
 
 export const modularBeveragePricingFormula = (wholeSaleBottlePrice: number | string, markupMultiplier: number | string, bottleSizeInML: number | string, ozPerPour: number | string) => {
   return Number(wholeSaleBottlePrice) * Number(markupMultiplier) / (Number(bottleSizeInML) * 0.033814 / Number(ozPerPour));
@@ -7,6 +9,12 @@ export const modularBeveragePricingFormula = (wholeSaleBottlePrice: number | str
 
 export const bottlePricingFormula = (wholeSaleBottlePrice: number | string, markupMultiplier: number | string) => {
   return Number(wholeSaleBottlePrice) * Number(markupMultiplier)
+}
+
+export const deriveMilliliters = (unitName: string, unitQuantity: number | string) => {
+  const milliliters = Number(marginEdgeBevereageUnitNames[toCamelCase(unitName) as keyof typeof marginEdgeBevereageUnitNames].measurementInMilliliters)
+  
+  return milliliters * Number(unitQuantity)
 }
 
 export const deriveMarkupMultiplier = (costPercentage: string | number) => {

@@ -19,10 +19,14 @@ export interface SuccessObject {
   color: string;
 }
 
-export interface CardReducerPayload {
+export interface CardReducerKey {
   value: string | number
   isReadyForProcessing: boolean
   errorKey: string
+}
+
+export interface CardReducerPayload {
+  [key: string]: CardReducerKey
 }
 
 interface BeverageDataBase {
@@ -45,7 +49,7 @@ export interface ProcessedBeverageData extends BeverageDataBase {
 }
 
 export interface ProcessedBeverageDataWithCardReducerPayload extends BeverageDataBase {
-  price: CardReducerPayload;
-  unitName: CardReducerPayload;
-  unitQuantity: CardReducerPayload;
+  price: CardReducerKey | CardReducerPayload;
+  unitName: CardReducerKey | CardReducerPayload;
+  unitQuantity: CardReducerKey | CardReducerPayload;
 }

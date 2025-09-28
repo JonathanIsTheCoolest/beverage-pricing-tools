@@ -29,4 +29,9 @@ export const marginEdgeProcessingStatuses = {
     name: 'fail',
     color: 'red',
   },
+  preview: (name: string) => ({
+    description: 'Preview 🛠️',
+    name: name as keyof typeof marginEdgeProcessingStatuses,
+    color: 'blue',
+  })
 };
