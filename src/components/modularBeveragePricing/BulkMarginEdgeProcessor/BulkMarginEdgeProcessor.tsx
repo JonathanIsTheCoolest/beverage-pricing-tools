@@ -9,7 +9,8 @@ import { BulkBeverageCard } from "../BulkBeverageCard/BulkBeverageCard";
 export const BulkMarginEdgeProcessor = ({ markupMultiplier, costPercentage, ozPerPour, slidingScale }: { markupMultiplier: number, costPercentage: number, ozPerPour: number, slidingScale: SlidingScale }) => {
   const { CSVDownloader, Type } = useCSVDownloader();
 
-  const filterCount = useRef<number>(0)
+  const tempFilterCount = useRef<number>(0)
+  const [filterCount, setFilterCount] = useState<number>(0)
   const [csvFile, setCsvFile] = useState<File | null>(null);
   const [processedData, setProcessedData] = useState<ProcessedBeverageData[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -29,15 +30,38 @@ export const BulkMarginEdgeProcessor = ({ markupMultiplier, costPercentage, ozPe
   const handleRemoveFile = () => {
     setCsvFile(null);
     setProcessedData([]);
-    filterCount.current = 0;
     (document.getElementById("csvFileInput") as HTMLInputElement).value = "";
   };
 
   const handleSearch = (filter: SearchFilter, query: string) => {
     setSearchQuery(query)
     setSearchFilter(filter)
-    filterCount.current = 0
   }
+
+  const renderProcessedData = () => {
+    tempFilterCount.current = 0
+    const processedDataMap = processedData.map((item: ProcessedBeverageData, index: number) => {
+      const {name} = item
+      if (item.name.toLowerCase().includes(searchQuery.toLowerCase()) && (searchFilter.name === item.success.name || searchFilter.name === 'all')) {
+        tempFilterCount.current++
+      }
+      return(
+      <BulkBeverageCard
+        key={name}
+        processedData={item}
+        setProcessedData={setProcessedData}
+        index={index}
+        searchQuery={searchQuery}
+        searchFilter={searchFilter}
+        slidingScale={slidingScale}
+      />
+    )})
+    return processedDataMap
+  }
+
+  useEffect(() => {
+    setFilterCount(tempFilterCount.current)
+  }, [processedData, searchQuery, searchFilter])
 
   return (
     <div>
@@ -100,25 +124,9 @@ export const BulkMarginEdgeProcessor = ({ markupMultiplier, costPercentage, ozPe
       <div>
         {
           processedData.length > 0 &&
-          <h3>Filtered Data: {filterCount.current} product{filterCount.current === 1 ? '' : 's'} match{filterCount.current === 1 ? 'es' : ''} the search criteria</h3>
+          <h3>Filtered Data: {filterCount} product{filterCount === 1 ? '' : 's'} match{filterCount === 1 ? 'es' : ''} the search criteria</h3>
         }
-        {processedData.map((item: ProcessedBeverageData, index: number) => {
-          const {name} = item
-          if (item.name.toLowerCase().includes(searchQuery.toLowerCase()) && (searchFilter.name === item.success.name || searchFilter.name === 'all')) {
-            filterCount.current++
-          }
-          return(
-          <BulkBeverageCard
-            key={name}
-            processedData={item}
-            setProcessedData={setProcessedData}
-            index={index}
-            searchQuery={searchQuery}
-            searchFilter={searchFilter}
-            slidingScale={slidingScale}
-            filterRef={filterCount}
-          />
-        )})}
+        {processedData.length > 0 && renderProcessedData()}
       </div>
     </div>
   )

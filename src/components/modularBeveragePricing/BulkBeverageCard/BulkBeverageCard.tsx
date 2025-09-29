@@ -1,4 +1,4 @@
-import { useReducer, useState, useEffect, type Dispatch, type SetStateAction, type RefObject } from "react"
+import { useReducer, useState, useEffect, type Dispatch, type SetStateAction} from "react"
 import type { CardReducerPayload, CardReducerKey, ProcessedBeverageData, ProcessedBeverageDataWithCardReducerPayload, ErrorObject, SuccessObject } from "../../../interfaces/marginEdge"
 import { handleSearchFilterLogic, handleSearchQueryLogic } from "../../../helpers/marginEdge/search"
 import type { SearchFilter, SlidingScale } from "../../../interfaces/calculator"
@@ -10,8 +10,8 @@ import { DeleteModal } from "../DeleteModal/DeleteModal"
 import { SuccessPopupModal } from "../SuccessPopupModal/SuccessPopupModal"
 
 export const BulkBeverageCard = (
-    {processedData, setProcessedData, searchQuery, searchFilter, index, slidingScale, filterRef}: 
-    {processedData: ProcessedBeverageData, setProcessedData: Dispatch<SetStateAction<ProcessedBeverageData[]>>, searchQuery: string, searchFilter: SearchFilter, index: number, slidingScale: SlidingScale, filterRef: RefObject<number>}
+    {processedData, setProcessedData, searchQuery, searchFilter, index, slidingScale}: 
+    {processedData: ProcessedBeverageData, setProcessedData: Dispatch<SetStateAction<ProcessedBeverageData[]>>, searchQuery: string, searchFilter: SearchFilter, index: number, slidingScale: SlidingScale}
 ) => {
   const buildPayloadState = (processedData: ProcessedBeverageData, key: keyof ProcessedBeverageData) => {
     return {
@@ -65,9 +65,6 @@ export const BulkBeverageCard = (
     setIsPreviewing(false)
     setIsSuccessPopupModalOpen(true)
     if (!Object.keys(state.error).length) {
-      if (processedData.success.name !== 'success') {
-        filterRef.current--
-      }
       setProcessedData((prev) => {
         const newProcessedData = {
           ...state,
@@ -84,7 +81,6 @@ export const BulkBeverageCard = (
 
   const handleDelete = () => {
     setProcessedData((prev) => {
-      filterRef.current--
       prev.splice(index, 1)
       return [...prev] as ProcessedBeverageData[]
     })
