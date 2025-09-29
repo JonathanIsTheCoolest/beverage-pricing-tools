@@ -30,7 +30,7 @@ export const DeleteModal = ({ setIsOpen, deleteFunction, productName }: { setIsO
           gap: "10px",
         }}
       >
-        <h2>This is a destructive action. Are you sure you want to delete "<span style={{ fontWeight: "bold", color: "red" }}>{productName}</span>"?</h2>
+        <h2>This action cannot be undone. Are you sure you want to delete "<span style={{ fontWeight: "bold", color: "red" }}>{productName}</span>"?</h2>
         <button onClick={deleteFunction}>Delete</button>
         <button onClick={() => setIsOpen(false)}>Cancel</button>
       </div>
