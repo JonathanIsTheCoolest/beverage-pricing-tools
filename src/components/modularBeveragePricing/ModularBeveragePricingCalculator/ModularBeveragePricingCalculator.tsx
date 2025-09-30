@@ -59,11 +59,13 @@ export const ModularBeveragePricingCalculator = ({children}: {children: React.Re
   } 
 
   const handleOnChangeUnitType = (value: string) => {
+    const triggerBoundChange = (unitType: string, bound: string | number) => value !== unitType ? deriveMarkupMultiplier(bound) : bound;
+
     setSlidingScale((prevSlidingScale) => ({
       ...prevSlidingScale,
       unitType: value as 'percentage' | 'markupMultiplier',
-      lowerBound: value === 'percentage' ? deriveMarkupMultiplier(prevSlidingScale.lowerBound) : deriveMarkupMultiplier(prevSlidingScale.lowerBound),
-      upperBound: value === 'percentage' ? deriveMarkupMultiplier(prevSlidingScale.upperBound) : deriveMarkupMultiplier(prevSlidingScale.upperBound),
+      lowerBound: triggerBoundChange(prevSlidingScale.unitType, prevSlidingScale.lowerBound),
+      upperBound: triggerBoundChange(prevSlidingScale.unitType, prevSlidingScale.upperBound),
     }));
     setMarkupMultiplier(deriveSlidingScaleMarkupMultiplier(slidingScale, wholeSaleBottlePrice));
   }
@@ -97,7 +99,7 @@ export const ModularBeveragePricingCalculator = ({children}: {children: React.Re
     { name: 'pricePerBottleFloor', label: 'Price Per Bottle Floor: ($)', type: 'number', value: slidingScale.pricePerBottleFloor, onChange: (e: React.ChangeEvent<HTMLInputElement>) => handleSlidingScaleChange(null, 'pricePerBottleFloor', e.target.value), style: inputStyle },
   ]
 
-  const unitTypeArray = [{ value: 'percentage', label: 'Percentage %' }, { value: 'markupMultiplier', label: 'Markup Multiplier *' }]
+  const unitTypeArray = ['percentage', 'markupMultiplier']
 
   const buildInputs = (inputArray: { name: string, label: string, type: string, value: string | number, onChange: (e: React.ChangeEvent<HTMLInputElement>) => void, style: React.CSSProperties | undefined }[]) => {
     return inputArray.map((input) => {

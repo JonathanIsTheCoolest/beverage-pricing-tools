@@ -1,26 +1,31 @@
-.optionsContainer {
-  position: absolute;
-  top: -12px;
-  left: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  border: 1px solid black;
+.optionsContainer, .selectedOption {
   border-radius: 5px;
   padding: 10px;
+  border: 1px solid transparent;
+}
+
+.optionsContainer {
+  position: absolute;
+  top: -11px;
+  left: 0px;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  border-color: black;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
   color: black;
   z-index: 1000;
+  max-height: 100px;
+  overflow-y: auto;
 }
 
 .option {
-  border-radius: 5px;
+  color: white;
+  background-color: transparent;
+  margin: 5px 0;
+  cursor: pointer;
+  width: fit-content;
 }
 
-.selectedOption {
-  border: 1px solid black;
-  border-radius: 5px;
-  padding: 10px;
+.selectedOption  {
   cursor: pointer;
 }

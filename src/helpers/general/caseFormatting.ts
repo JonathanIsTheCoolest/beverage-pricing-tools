@@ -4,6 +4,12 @@ export const toCamelCase = (string: string) => {
   }).join('')
 }
 
+export const camelCaseToTitleCase = (string: string) => {
+  return string.split(/(?=[A-Z])|(?<!\d)(?=\d)/).map((item) => {
+    return item[0].toUpperCase().concat(item.slice(1, item.length).toLowerCase())
+  }).join(' ')
+}
+
 export const capitalizeFirstLetter = (string: string) => {
   return string.charAt(0).toUpperCase() + string.slice(1)
 }
