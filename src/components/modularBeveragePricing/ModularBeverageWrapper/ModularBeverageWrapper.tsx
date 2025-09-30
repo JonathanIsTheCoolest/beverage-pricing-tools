@@ -6,9 +6,7 @@ export const ModularBeverageWrapper = () => {
   const [showDocumentation, setShowDocumentation] = useState(false);
 
   return (
-    <div
-      onClick={() => showDocumentation && setShowDocumentation(false)}
-    >
+    <div>
       <ModularBeveragePricingCalculator>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <button onClick={() => setShowDocumentation(!showDocumentation)}>
