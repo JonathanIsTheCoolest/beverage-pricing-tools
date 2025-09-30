@@ -1,4 +1,4 @@
-import { marginEdgeBevereageUnitNames, marginEdgeBevereageUnitAliases } from "../../constants/marginEdge";
+import { marginEdgeBevereageUnitNames, marginEdgeBevereageUnitAliases, marginEdgeBeverageCategories } from "../../constants/marginEdge";
 import type { BeverageData } from "../../interfaces/marginEdge";
 import type { SlidingScale } from "../../interfaces/calculator";
 import { csvParsingErrorMessages } from "../../errorMessages/csv";
@@ -36,6 +36,11 @@ const getUnitQuantity = (string: string): number | string => {
   return '';
 }
 
+const getMostCommonFormat = (category: string) => {
+  const categoryKey = toCamelCase(category) as keyof typeof marginEdgeBeverageCategories;
+  return marginEdgeBeverageCategories[categoryKey]?.mostCommonFormat;
+}
+
 export const processBeverageData = (data: BeverageData[], markupMultiplier: number, costPercentage: number | string, ozPerPour: number, slidingScale: SlidingScale) => {
   return data.map((row) => {
     let success = marginEdgeProcessingStatuses.success;
@@ -43,6 +48,7 @@ export const processBeverageData = (data: BeverageData[], markupMultiplier: numb
     let unitName = '';
     let unitQuantity: number | string = '';
     const category = row["Category"];
+    const mostCommonFormat = getMostCommonFormat(category);
 
     const latestPrice = getUnitQuantity(row["Latest Price"]);
     if (slidingScale.isEnabled) {
@@ -76,8 +82,8 @@ export const processBeverageData = (data: BeverageData[], markupMultiplier: numb
     if (!unitName) {
       error[toCamelCase(csvParsingErrorMessages.missingUnitName)] = csvParsingErrorMessages.missingUnitName;
       success = marginEdgeProcessingStatuses.partial;
-      unitName = 'Milliliters';
-      unitQuantity = 750;
+      unitName = mostCommonFormat?.unitName || 'Milliliters';
+      unitQuantity = mostCommonFormat?.unitQuantity || 750;
     }
 
     if (Number(latestPrice) <= 0) {

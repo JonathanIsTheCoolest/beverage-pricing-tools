@@ -58,134 +58,170 @@ export const marginEdgeProcessingStatuses = {
 };
 
 export const marginEdgeBeverageCategories = {
-  naBeverage: {
+  naBeverages: {
     name: "NA Beverages",
+    mostCommonFormat: {
+      name: "Bottle",
+      unitName: fluidOunces.name,
+      unitQuantity: 12,
+    },
     subcategories: {
       soda: {
         name: "Soda",
         mostCommonFormat: {
           name: "Bottle",
-          measurementInMilliliters: 355,
+          unitName: fluidOunces.name,
+          unitQuantity: 12,
         }
       },
       juice: {
         name: "Juice",
         mostCommonFormat: {
           name: "Bottle",
-          measurementInMilliliters: 355,
+          unitName: fluidOunces.name,
+          unitQuantity: 12,
         }
       },
       water: {
         name: "Water",
         mostCommonFormat: {
           name: "Bottle",
-          measurementInMilliliters: 355,
+          unitName: fluidOunces.name,
+          unitQuantity: 12,
         }
       },
     }
   },
-  beer: {
+  'beerBottle/Can': {
     name: "Beer Bottle / Can",
+    mostCommonFormat: {
+      name: "Bottle",
+      unitName: fluidOunces.name,
+      unitQuantity: 12,
+    },
     subcategories: {
       beer: {
         name: "Beer",
         mostCommonFormat: {
           name: "Bottle",
-          measurementInMilliliters: 355,
+          unitName: fluidOunces.name,
+          unitQuantity: 12,
         }
       },
       cider: {
         name: "Cider",
         mostCommonFormat: {
           name: "Can",
-          measurementInMilliliters: 355,
+          unitName: fluidOunces.name,
+          unitQuantity: 12,
         }
       },
     }
   },
   wine: {
     name: "Wine",
+    mostCommonFormat: {
+      name: "Bottle",
+      unitName: milliliters.name,
+      unitQuantity: 750,
+    },
     subcategories: {
       table: {
         name: "Table",
         mostCommonFormat: {
           name: "Bottle",
-          measurementInMilliliters: 750,
+          unitName: milliliters.name,
+          unitQuantity: 750,
         }
       },
       dessert: {
         name: "Dessert",
         mostCommonFormat: {
           name: "Bottle",
-          measurementInMilliliters: 375,
+          unitName: milliliters.name,
+          unitQuantity: 375,
         }
       },
       port: {
         name: "Port",
         mostCommonFormat: {
           name: "Bottle",
-          measurementInMilliliters: 500,
+          unitName: milliliters.name,
+          unitQuantity: 500,
         }
       },
     }
   },
   liquor: {
     name: "Liquor",
+    mostCommonFormat: {
+      name: "Bottle",
+      unitName: milliliters.name,
+      unitQuantity: 750,
+    },
     subcategories: {
       vodka: {
         name: "Vodka",
         mostCommonFormat: {
           name: "Bottle",
-          measurementInMilliliters: 750,
+          unitName: milliliters.name,
+          unitQuantity: 750,
         }
       },
       gin: {
         name: "Gin",
         mostCommonFormat: {
           name: "Bottle",
-          measurementInMilliliters: 750,
+          unitName: milliliters.name,
+          unitQuantity: 750,
         }
       },
       rum: {
         name: "Rum",
         mostCommonFormat: {
           name: "Bottle",
-          measurementInMilliliters: 750,
+          unitName: milliliters.name,
+          unitQuantity: 750,
         }
       },
       whiskey: {
         name: "Whiskey",
         mostCommonFormat: {
           name: "Bottle",
-          measurementInMilliliters: 750,
+          unitName: milliliters.name,
+          unitQuantity: 750,
         }
       },
       tequila: {
         name: "Tequila",
         mostCommonFormat: {
           name: "Bottle",
-          measurementInMilliliters: 750,
+            unitName: milliliters.name,
+          unitQuantity: 750,
         }
       },
       liqueur: {
         name: "Liqueur",
         mostCommonFormat: {
           name: "Bottle",
-          measurementInMilliliters: 750,
+          unitName: milliliters.name,
+          unitQuantity: 750,
         }
       },
       bitters: {
         name: "Bitters",
         mostCommonFormat: {
           name: "Bottle",
-          measurementInMilliliters: 118.294,
+          unitName: fluidOunces.name,
+          unitQuantity: 4,
         }
       },
       other: {
         name: "Other",
         mostCommonFormat: {
           name: "Bottle",
-          measurementInMilliliters: 750,
+          unitName: milliliters.name,
+          unitQuantity: 750,
         }
       },
     }
