@@ -5,6 +5,7 @@ import type { ProcessedBeverageData } from "../../../interfaces/marginEdge";
 import type { SearchFilter, SlidingScale } from "../../../interfaces/calculator";
 import { bulkCsvRequest } from "../../../helpers/marginEdge/bulkCsvRequest";
 import { BulkBeverageCard } from "../BulkBeverageCard/BulkBeverageCard";
+import { FileSelect } from "../../helper/inputs/FileSelect/FileSelect";
 
 export const BulkMarginEdgeProcessor = ({ markupMultiplier, costPercentage, ozPerPour, slidingScale }: { markupMultiplier: number, costPercentage: number, ozPerPour: number, slidingScale: SlidingScale }) => {
   const { CSVDownloader, Type } = useCSVDownloader();
@@ -66,8 +67,8 @@ export const BulkMarginEdgeProcessor = ({ markupMultiplier, costPercentage, ozPe
   return (
     <div>
     <h2>Upload Margin Edge CSV File and Process Data in Bulk</h2>
-      <input id="csvFileInput" type="file" accept=".csv" onChange={(e) => handleCsvFileChange(e)} />
-      <button onClick={() => handleRemoveFile()}>Remove File And Processed Data</button>
+      <FileSelect onChange={handleCsvFileChange} />
+      {csvFile && <button onClick={() => handleRemoveFile()}>Remove File And Processed Data</button>}
       <br />
       {
         csvFile && 

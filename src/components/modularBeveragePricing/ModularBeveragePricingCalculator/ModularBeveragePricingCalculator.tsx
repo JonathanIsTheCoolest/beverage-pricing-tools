@@ -3,6 +3,8 @@ import { deriveMarkupMultiplier, modularBeveragePricingFormula, bottlePricingFor
 import { defaultSlidingScale } from "../../../constants/calculator";
 import type { SlidingScale } from "../../../interfaces/calculator";
 import { BulkMarginEdgeProcessor } from "../BulkMarginEdgeProcessor/BulkMarginEdgeProcessor";
+import { Select } from "../../helper/inputs/Select/Select";
+import { Checkbox } from "../../helper/inputs/Checkbox/Checkbox";
 
 export const ModularBeveragePricingCalculator = ({children}: {children: React.ReactNode}) => {
   const [wholeSaleBottlePrice, setWholeSaleBottlePrice] = useState<string>("");
@@ -34,12 +36,12 @@ export const ModularBeveragePricingCalculator = ({children}: {children: React.Re
     setMarkupMultiplier(deriveSlidingScaleMarkupMultiplier(newSlidingScale, wholeSaleBottlePrice));
   };
 
-  const handleSlidingScaleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSlidingScaleCheckboxChange = (checked: boolean) => {
     setSlidingScale((prevSlidingScale) => ({
       ...prevSlidingScale,
-      isEnabled: e.target.checked,
+      isEnabled: checked,
     }));
-    if (e.target.checked) {
+    if (checked) {
       setMarkupMultiplier(deriveSlidingScaleMarkupMultiplier(slidingScale, wholeSaleBottlePrice));
     } else {
       setMarkupMultiplier(deriveMarkupMultiplier(costPercentage));
@@ -56,12 +58,12 @@ export const ModularBeveragePricingCalculator = ({children}: {children: React.Re
     if (slidingScale.isEnabled) setMarkupMultiplier(deriveSlidingScaleMarkupMultiplier(slidingScale, e.target.value));
   } 
 
-  const handleOnChangeUnitType = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleOnChangeUnitType = (value: string) => {
     setSlidingScale((prevSlidingScale) => ({
       ...prevSlidingScale,
-      unitType: e.target.value as 'percentage' | 'markupMultiplier',
-      lowerBound: e.target.value === 'percentage' ? deriveMarkupMultiplier(prevSlidingScale.lowerBound) : deriveMarkupMultiplier(prevSlidingScale.lowerBound),
-      upperBound: e.target.value === 'percentage' ? deriveMarkupMultiplier(prevSlidingScale.upperBound) : deriveMarkupMultiplier(prevSlidingScale.upperBound),
+      unitType: value as 'percentage' | 'markupMultiplier',
+      lowerBound: value === 'percentage' ? deriveMarkupMultiplier(prevSlidingScale.lowerBound) : deriveMarkupMultiplier(prevSlidingScale.lowerBound),
+      upperBound: value === 'percentage' ? deriveMarkupMultiplier(prevSlidingScale.upperBound) : deriveMarkupMultiplier(prevSlidingScale.upperBound),
     }));
     setMarkupMultiplier(deriveSlidingScaleMarkupMultiplier(slidingScale, wholeSaleBottlePrice));
   }
@@ -95,6 +97,8 @@ export const ModularBeveragePricingCalculator = ({children}: {children: React.Re
     { name: 'pricePerBottleFloor', label: 'Price Per Bottle Floor: ($)', type: 'number', value: slidingScale.pricePerBottleFloor, onChange: (e: React.ChangeEvent<HTMLInputElement>) => handleSlidingScaleChange(null, 'pricePerBottleFloor', e.target.value), style: inputStyle },
   ]
 
+  const unitTypeArray = [{ value: 'percentage', label: 'Percentage %' }, { value: 'markupMultiplier', label: 'Markup Multiplier *' }]
+
   const buildInputs = (inputArray: { name: string, label: string, type: string, value: string | number, onChange: (e: React.ChangeEvent<HTMLInputElement>) => void, style: React.CSSProperties | undefined }[]) => {
     return inputArray.map((input) => {
       return (
@@ -121,8 +125,8 @@ export const ModularBeveragePricingCalculator = ({children}: {children: React.Re
       <br />
       <label> 
         Use Sliding Scale:
-      </label>
-      <input type="checkbox" checked={slidingScale.isEnabled} onChange={(e) => handleSlidingScaleCheckboxChange(e)} />
+      </label> &nbsp;
+      <Checkbox label="Use Sliding Scale" checked={slidingScale.isEnabled} onChange={handleSlidingScaleCheckboxChange} />
       <br />
       <br />
       {slidingScaleWarning && <span style={{ color: 'red' }}>{slidingScaleWarning}<br/></span>}
@@ -131,12 +135,9 @@ export const ModularBeveragePricingCalculator = ({children}: {children: React.Re
         <>
           <div style={inputStyle}>
             <label>
-              Bound Unit Type:
+              Bound Unit Type: &nbsp;
             </label>
-            <select value={slidingScale.unitType} onChange={(e) => handleOnChangeUnitType(e)}>
-              <option value="percentage">Percentage %</option>
-              <option value="markupMultiplier">Markup Multiplier *</option>
-            </select>
+            <Select options={unitTypeArray} value={slidingScale.unitType} onChange={handleOnChangeUnitType} />
           </div>
           {buildInputs(slidingScaleInputArray)}
         </>
